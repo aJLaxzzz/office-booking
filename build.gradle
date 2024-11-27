@@ -1,0 +1,72 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.5'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.postgresql:postgresql:42.6.0'
+	runtimeOnly 'com.h2database:h2'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	annotationProcessor 'org.projectlombok:lombok'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+tasks.register('buildDb', Exec) {
+	commandLine 'docker', 'build', '-t', 'real-estate-db:latest', '-f', 'Dockerfile', '.'
+}
+
+tasks.register('runDb') {
+	dependsOn(buildDb)
+	doLast {
+		def volumeCheck = "docker volume inspect real-estate-db-volume"
+		def result = volumeCheck.execute().text
+
+		if (result.contains("no such volume") || result.contains("No such volume")) {
+			println "Creating Docker volume real-estate-db-volume"
+			def volumeCreate = "docker volume create real-estate-db-volume"
+			volumeCreate.execute().text
+		} else {
+			println "Docker volume real-estate-db-volume already exists"
+		}
+
+		println "Starting PostgreSQL container with volume mount"
+		def containerRun = "docker run -d --rm -p 5433:5432 -v real-estate-db-volume:/var/lib/postgresql/data real-estate-db"
+		containerRun.execute().text
+	}
+}
+
+bootRun.dependsOn runDb

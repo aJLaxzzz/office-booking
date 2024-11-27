@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Real Estate Listings</title>
+    <style>
+        body {
+            background-color: #121212; /* Темный фон */
+            color: #c5c6c7; /* Светло-серый текст */
+            font-family: 'Arial', sans-serif; /* Шрифт */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #1f2833;
+            color: #66fcf1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            z-index: 1000; /* Ensure the header is always on top */
+        }
+
+        footer {
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #1f2833;
+            color: #66fcf1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .container {
+            flex-grow: 1;
+            margin-top: 150px; /* Increased padding to ensure content is below the header */
+            padding-bottom: 40px; /* Spacing for fixed footer */
+            overflow-y: auto; /* Scrollable content */
+            width: calc(100% - 240px); /* Accounting for form width */
+            margin-left: auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        .form-container {
+            width: 200px; /* Сделаем ширину формы немного уже */
+            background-color: #1f2833;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            position: fixed;
+            right: 10px;
+            top: 100px; /* Начинаем форму немного ниже, чтобы было меньше перекрытия с header */
+            bottom: 100px; /* Оставим больше пространства до нижнего края экрана */
+            overflow-y: auto; /* Позволяем прокрутку внутри контейнера */
+            display: flex;
+            flex-direction: column;
+            z-index: 1001; /* Обеспечиваем, чтобы форма была поверх основного контента */
+        }
+
+
+        input, select, button, .button {
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #0b0c10;
+            color: #66fcf1;
+            width: 100%;
+        }
+
+        button, .button {
+            cursor: pointer;
+            background-color: #45a29e;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover, .button:hover {
+            background-color: #ff5555; /* Red background when hovered */
+            transform: scale(1.05);
+        }
+
+        .logout-button {
+            background-color: #ff5555; /* Red background for logout button */
+            text-align: center; /* Center the text inside the button */
+            margin-top: auto; /* Push to the bottom of the form container */
+            width: auto; /* Only as wide as its content */
+        }
+
+        a {
+            color: #66fcf1; /* Neon color for links */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .real-estate-listing {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #2b333e;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.5);
+            transition: transform 0.3s ease;
+            width: 60%; /* Moderately wide cards */
+            margin: 20px auto; /* Centering cards */
+        }
+
+        .real-estate-listing:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.75);
+        }
+
+        .real-estate-listing img {
+            border-radius: 5px;
+            margin-bottom: 10px;
+            width: 100%; /* Images fill the card width */
+            max-width: 200px; /* Limit image width */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .real-estate-listing p {
+            background-color: #1f2833; /* Фон абзаца */
+            color: #66fcf1; /* Цвет текста */
+            padding: 10px; /* Внутренние отступы */
+            border-radius: 5px; /* Скругление углов */
+            margin: 5px 0; /* Отступы сверху и снизу */
+            box-shadow: 0 2px 5px rgba(0, 255, 255, 0.3); /* Тень для абзаца */
+            transition: background-color 0.3s ease; /* Плавный переход цвета фона */
+        }
+
+        .real-estate-listing p:hover {
+            background-color: #0b0c10; /* Изменение фона при наведении */
+        }
+
+        .real-estate-listing h2 {
+            background-color: #0b0c10; /* Фон заголовка */
+            color: #66fcf1; /* Цвет текста заголовка */
+            padding: 10px; /* Внутренние отступы заголовка */
+            border-radius: 5px; /* Скругление углов заголовка */
+            box-shadow: 0 3px 6px rgba(0, 255, 255, 0.5); /* Тень для заголовка */
+        }
+
+        .real-estate-listing h2:hover {
+            background-color: #1f2833; /* Изменение фона заголовка при наведении */
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-content">
+        <h1>Real Estate Agency</h1>
+    </div>
+</header>
+<div class="form-container">
+    <h2>Фильтр</h2> <!-- Заголовок для формы фильтрации -->
+    <form th:action="@{/search}" method="get">
+        <input type="text" name="address" placeholder="Адрес">
+        <input type="number" name="areaMin" placeholder="Мин Площадь">
+        <input type="number" name="areaMax" placeholder="Макс Площадь">
+        <input type="number" name="priceMin" placeholder="Мин Цена (₽)">
+        <input type="number" name="priceMax" placeholder="Макс Цена (₽)">
+        <input type="number" name="buildYearMin" placeholder="Мин Год Постройки">
+        <input type="number" name="buildYearMax" placeholder="Макс Год Постройки">
+        <input type="number" name="minLivingRooms" placeholder="Мин Количество Комнат">
+        <input type="number" name="minBathRooms" placeholder="Мин Количество С/У">
+        <select name="sortBy">
+            <option value="address">Sort by Address</option>
+            <option value="area">Sort by Area</option>
+            <option value="price">Sort by Price</option>
+            <option value="buildYear">Sort by Build Year</option>
+            <option value="numberOfLivingRooms">Sort by Living Rooms</option>
+            <option value="numberOfBathRooms">Sort by Bathrooms</option>
+        </select>
+        <select name="sortDirection">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
+        <button type="submit">Search</button>
+    </form>
+    <a href="/logout" class="button logout-button">LOGOUT</a>
+</div>
+
+<div class="container">
+    <!-- Display Real Estate Listings -->
+    <div th:if="${realEstateObjects.isEmpty()}">
+        <p>Нет доступных предложений недвижимости.</p>
+    </div>
+    <div th:unless="${realEstateObjects.isEmpty()}">
+        <div th:each="realEstateObject : ${realEstateObjects}" class="real-estate-listing">
+            <h2 th:text="${realEstateObject.address}">Адрес</h2>
+            <img th:src="@{${realEstateObject.photoURL}}" alt="Изображение недвижимости">
+            <p th:text="'Площадь: ' + ${realEstateObject.area} + ' кв. м.'">Площадь</p>
+            <p th:text="'Цена: $' + ${realEstateObject.price}">Цена</p>
+            <p th:text="'Описание: ' + ${realEstateObject.description}">Описание</p>
+            <p th:text="'Год постройки: ' + ${realEstateObject.buildYear}">Год постройки</p>
+            <p th:text="'Количество жилых комнат: ' + ${realEstateObject.numberOfLivingRooms}">Количество жилых комнат</p>
+            <p th:text="'Количество ванных комнат: ' + ${realEstateObject.numberOfBathRooms}">Количество ванных комнат</p>
+        </div>
+    </div>
+</div>
+<footer>
+    © 2024 Real Estate Agency. Chernykh Timofei ИКБО-36-22.
+</footer>
+</body>
+</html>
