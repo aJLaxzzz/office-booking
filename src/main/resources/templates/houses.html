@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Real Estate Listings</title>
+    <title>Office Booking</title>
     <style>
         body {
             background-color: #121212; /* Темный фон */
@@ -175,7 +175,7 @@
 <body>
 <header>
     <div class="header-content">
-        <h1>Real Estate Agency</h1>
+        <h1>Office Booking</h1>
     </div>
 </header>
 <div class="form-container">
@@ -191,17 +191,17 @@
         <input type="number" name="floorMin" placeholder="Мин Этаж">
         <input type="number" name="floorMax" placeholder="Макс Этаж">
         <select name="sortBy">
-            <option value="address">Sort by Address</option>
-            <option value="area">Sort by Area</option>
-            <option value="price">Sort by Price</option>
-            <option value="buildYear">Sort by Build Year</option>
-            <option value="floor">Sort by Floor</option>
+            <option value="address">Сортировка по адресу</option>
+            <option value="area">Сортировка по площади</option>
+            <option value="price">Сортировка по цене</option>
+            <option value="buildYear">Сортировка по году постройки</option>
+            <option value="floor">Сортировка по этажу</option>
         </select>
         <select name="sortDirection">
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
+            <option value="asc">По возрастанию</option>
+            <option value="desc">По убыванию</option>
         </select>
-        <button type="submit">Search</button>
+        <button type="submit">Поиск</button>
     </form>
     <a href="/logout" class="button logout-button">LOGOUT</a>
 </div>
@@ -224,7 +224,7 @@
     </div>
 </div>
 <footer>
-    © 2024 Real Estate Agency. Chernykh Timofei ИКБО-36-22.
+    © 2024 Office Booking. Chernykh Timofei ИКБО-36-22.
 </footer>
 </body>
 </html>

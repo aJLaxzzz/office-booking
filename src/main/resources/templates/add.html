@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <title>Добавить объект недвижимости</title>
+    <title>Добавить офисное помещение</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap">
     <style>
         body {
@@ -119,14 +119,14 @@
 </head>
 <body>
 <header>
-    <h1>Real Estate Agency</h1>
+    <h1>Office Booking</h1>
 </header>
 <div class="container">
     <div class="button-container">
         <a href="/logout" class="button logout-button">LOGOUT</a>
-        <a href="/houses" class="button houses-button">HOUSES</a>
+        <a href="/houses" class="button houses-button">OFFICES</a>
     </div>
-    <h2>Добавление объекта недвижимости</h2>
+    <h2>Добавление офисного помещения</h2>
     <form id="propertyForm">
         <label for="address">Адрес:</label>
         <input type="text" id="address" name="address" required maxlength="500" />
@@ -138,7 +138,7 @@
         <input type="text" id="description" name="description" maxlength="1000" />
         <label for="buildYear">Год постройки:</label>
         <input type="number" id="buildYear" name="buildYear" required />
-        <label for="floor">Этажт:</label>
+        <label for="floor">Этаж:</label>
         <input type="number" id="floor" name="floor" required />
         <label for="photoURL">URL фотографии:</label>
         <input type="text" id="photoURL" name="photoURL" required />
@@ -146,7 +146,7 @@
     </form>
 </div>
 <footer>
-    © 2024 Real Estate Agency. Chernykh Timofei ИКБО-36-22.
+    © 2024 Office Booking. Chernykh Timofei ИКБО-36-22.
 </footer>
 <script>
     document.getElementById('propertyForm').addEventListener('submit', function(e) {
@@ -157,8 +157,7 @@
             price: parseInt(document.getElementById('price').value),
             description: document.getElementById('description').value,
             buildYear: parseInt(document.getElementById('buildYear').value),
-            numberOfLivingRooms: parseInt(document.getElementById('numberOfLivingRooms').value),
-            numberOfBathRooms: parseInt(document.getElementById('numberOfBathRooms').value),
+            floor: parseInt(document.getElementById('floor').value),
             photoURL: document.getElementById('photoURL').value
         };
         fetch('/api/realestate', {

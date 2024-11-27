@@ -25,10 +25,10 @@ public class Booking {
     @Column(name="object_id", nullable=false)
     private Long objectId;
 
-    @Column(name="start", nullable=false)
+    @Column(name="startTime", nullable=false)
     private LocalDateTime startTime;
 
-    @Column(name="end", nullable=false)
+    @Column(name="endTime", nullable=false)
     private LocalDateTime endTime;
 }
 

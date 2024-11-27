@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="/resources/images/logo.ico" type="image/x-icon">
@@ -110,7 +110,7 @@
 </head>
 <body>
 <header>
-    <h1>Real Estate Agency</h1>
+    <h1>Office Booking</h1>
 </header>
 <div class="container">
     <form name="f" method="POST" th:action="@{/login}" th:object="${user}">
@@ -135,7 +135,7 @@
     </form>
 </div>
 <footer>
-    © 2024 Real Estate Agency. Chernykh Timofei ИКБО-36-22.
+    © 2024 Office Booking. Chernykh Timofei ИКБО-36-22.
 </footer>
 </body>
 </html>
