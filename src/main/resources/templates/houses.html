@@ -188,15 +188,14 @@
         <input type="number" name="priceMax" placeholder="Макс Цена (₽)">
         <input type="number" name="buildYearMin" placeholder="Мин Год Постройки">
         <input type="number" name="buildYearMax" placeholder="Макс Год Постройки">
-        <input type="number" name="minLivingRooms" placeholder="Мин Количество Комнат">
-        <input type="number" name="minBathRooms" placeholder="Мин Количество С/У">
+        <input type="number" name="floorMin" placeholder="Мин Этаж">
+        <input type="number" name="floorMax" placeholder="Макс Этаж">
         <select name="sortBy">
             <option value="address">Sort by Address</option>
             <option value="area">Sort by Area</option>
             <option value="price">Sort by Price</option>
             <option value="buildYear">Sort by Build Year</option>
-            <option value="numberOfLivingRooms">Sort by Living Rooms</option>
-            <option value="numberOfBathRooms">Sort by Bathrooms</option>
+            <option value="floor">Sort by Floor</option>
         </select>
         <select name="sortDirection">
             <option value="asc">Ascending</option>
@@ -220,8 +219,7 @@
             <p th:text="'Цена: $' + ${realEstateObject.price}">Цена</p>
             <p th:text="'Описание: ' + ${realEstateObject.description}">Описание</p>
             <p th:text="'Год постройки: ' + ${realEstateObject.buildYear}">Год постройки</p>
-            <p th:text="'Количество жилых комнат: ' + ${realEstateObject.numberOfLivingRooms}">Количество жилых комнат</p>
-            <p th:text="'Количество ванных комнат: ' + ${realEstateObject.numberOfBathRooms}">Количество ванных комнат</p>
+            <p th:text="'Этаж: ' + ${realEstateObject.floor}">Этаж</p>
         </div>
     </div>
 </div>

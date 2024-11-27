@@ -30,8 +30,8 @@ public class HousesController {
                          @RequestParam(required = false) Integer priceMax,
                          @RequestParam(required = false) Integer buildYearMin,
                          @RequestParam(required = false) Integer buildYearMax,
-                         @RequestParam(required = false) Integer minLivingRooms,
-                         @RequestParam(required = false) Integer minBathRooms,
+                         @RequestParam(required = false) Integer floorMin,
+                         @RequestParam(required = false) Integer floorMax,
                          @RequestParam(defaultValue = "address") String sortBy,
                          @RequestParam(defaultValue = "asc") String sortDirection,
                          Model model) {
@@ -39,7 +39,7 @@ public class HousesController {
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
         List<RealEstateObject> searchResults = realEstateObjectRepository.findByCriteria(
                 address, description, areaMin, areaMax, priceMin, priceMax,
-                buildYearMin, buildYearMax, minLivingRooms, minBathRooms, sort);
+                buildYearMin, buildYearMax, floorMin, floorMax, sort);
 
         model.addAttribute("realEstateObjects", searchResults);
         return "houses";

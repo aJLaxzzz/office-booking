@@ -30,11 +30,8 @@ public class RealEstateObject {
     @Column(name = "build_year", nullable = false)
     private int buildYear;
 
-    @Column(name = "number_of_livingrooms", nullable = false)
-    private int numberOfLivingRooms;
-
-    @Column(name = "number_of_bathrooms", nullable = false)
-    private int numberOfBathRooms;
+    @Column(name = "floor", nullable = false)
+    private int floor;
 
     @Column(name = "photo", nullable = false)
     private String photoURL;

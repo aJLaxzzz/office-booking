@@ -21,8 +21,8 @@ public interface RealEstateObjectRepository extends JpaRepository<RealEstateObje
             "(:priceMax IS NULL OR r.price <= :priceMax) AND " +
             "(:buildYearMin IS NULL OR r.buildYear >= :buildYearMin) AND " +
             "(:buildYearMax IS NULL OR r.buildYear <= :buildYearMax) AND " +
-            "(:minLivingRooms IS NULL OR r.numberOfLivingRooms >= :minLivingRooms) AND " +
-            "(:minBathRooms IS NULL OR r.numberOfBathRooms >= :minBathRooms)")
+            "(:floorMin IS NULL OR r.floor >= :floorMin) AND " +
+            "(:floorMax IS NULL OR r.floor <= :floorMax)")
     List<RealEstateObject> findByCriteria(
             @Param("address") String address,
             @Param("description") String description,
@@ -32,8 +32,8 @@ public interface RealEstateObjectRepository extends JpaRepository<RealEstateObje
             @Param("priceMax") Integer priceMax,
             @Param("buildYearMin") Integer buildYearMin,
             @Param("buildYearMax") Integer buildYearMax,
-            @Param("minLivingRooms") Integer minLivingRooms,
-            @Param("minBathRooms") Integer minBathRooms,
+            @Param("floorMin") Integer floorMin,
+            @Param("floorMax") Integer floorMax,
             Sort sort);
 }
 

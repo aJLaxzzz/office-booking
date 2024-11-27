@@ -19,16 +19,18 @@ public class UserInitGenerator {
     @PostConstruct
     public void generateUsers() {
         List<User> users = List.of(
-            new User(
-                null,
-                "admin",
-                passwordEncoder.encode("admin")
-            ),
-            new User(
-                null,
-                "user",
-                passwordEncoder.encode("user")
-            )
+                new User(
+                        null,
+                        "admin",
+                        "admin",
+                        passwordEncoder.encode("admin")
+                ),
+                new User(
+                        null,
+                        "user",
+                        "user",
+                        passwordEncoder.encode("user")
+                )
         );
         userRepository.saveAll(users);
     }

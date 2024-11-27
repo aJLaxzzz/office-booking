@@ -69,8 +69,8 @@ public class RealEstateObjectController {
         Integer priceMax = params.containsKey("priceMax") ? Integer.parseInt(params.getFirst("priceMax")) : null;
         Integer buildYearMin = params.containsKey("buildYearMin") ? Integer.parseInt(params.getFirst("buildYearMin")) : null;
         Integer buildYearMax = params.containsKey("buildYearMax") ? Integer.parseInt(params.getFirst("buildYearMax")) : null;
-        Integer minLivingRooms = params.containsKey("minLivingRooms") ? Integer.parseInt(params.getFirst("minLivingRooms")) : null;
-        Integer minBathRooms = params.containsKey("minBathRooms") ? Integer.parseInt(params.getFirst("minBathRooms")) : null;
+        Integer floorMin = params.containsKey("floorMin") ? Integer.parseInt(params.getFirst("floorMin")) : null;
+        Integer floorMax = params.containsKey("floorMax") ? Integer.parseInt(params.getFirst("floorMax")) : null;
 
         // Handle sorting
         String sortBy = params.getFirst("sortBy");
@@ -79,7 +79,7 @@ public class RealEstateObjectController {
 
         List<RealEstateObject> result = realEstateObjectRepository.findByCriteria(
                 address, description, areaMin, areaMax, priceMin, priceMax,
-                buildYearMin, buildYearMax, minLivingRooms, minBathRooms, sort
+                buildYearMin, buildYearMax, floorMin, floorMax, sort
         );
 
         return result;

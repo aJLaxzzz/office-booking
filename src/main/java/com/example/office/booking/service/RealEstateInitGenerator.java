@@ -89,8 +89,8 @@ public class RealEstateInitGenerator {
         return 1900 + random.nextInt(123);
     }
 
-    private int getRandomNumberOfRooms() {
-        return 1 + random.nextInt(5);
+    private int getRandomFloor() {
+        return 1 + random.nextInt(25);
     }
 
     private String getRandomPhotoURL() {return "/" + random.nextInt(30) + ".jpeg";}
@@ -104,8 +104,7 @@ public class RealEstateInitGenerator {
                 getRandomPrice(),
                 getRandomDescription(),
                 getRandomBuildYear(),
-                getRandomNumberOfRooms(),
-                getRandomNumberOfRooms(),
+                getRandomFloor(),
                 getRandomPhotoURL()
             )
         ).collect(Collectors.toList());

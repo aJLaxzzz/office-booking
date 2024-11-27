@@ -33,16 +33,17 @@ public class UserService {
     public boolean addUser(UserDTO newUser) {
         if (!userRepository.existsByName(newUser.getName())) {
             User user = new User(
-                null,
-                newUser.getName(),
-                encoder.encode(newUser.getPassword())
+                    null,
+                    newUser.getName(),
+                    newUser.getEmail(),
+                    encoder.encode(newUser.getPassword())
             );
             userRepository.save(user);
 
             User savedUser = userRepository.getUserByName(user.getName());
             UserRole userRole = new UserRole(
-                UserRole.Role.USER,
-                savedUser.getId()
+                    UserRole.Role.USER,
+                    savedUser.getId()
             );
             userRoleRepository.save(userRole);
 
