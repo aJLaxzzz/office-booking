@@ -1,4 +1,4 @@
-package com.example.real.estate.agency.controller;
+package com.example.office.booking.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

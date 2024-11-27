@@ -1,4 +1,4 @@
-package com.example.real.estate.agency.entity;
+package com.example.office.booking.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

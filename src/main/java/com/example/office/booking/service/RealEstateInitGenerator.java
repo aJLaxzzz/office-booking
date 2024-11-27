@@ -1,7 +1,7 @@
-package com.example.real.estate.agency.service;
+package com.example.office.booking.service;
 
-import com.example.real.estate.agency.entity.RealEstateObject;
-import com.example.real.estate.agency.repository.RealEstateObjectRepository;
+import com.example.office.booking.entity.RealEstateObject;
+import com.example.office.booking.repository.RealEstateObjectRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,7 @@
-package com.example.real.estate.agency.service;
+package com.example.office.booking.service;
 
-import com.example.real.estate.agency.entity.UserRole;
-import com.example.real.estate.agency.repository.UserRoleRepository;
+import com.example.office.booking.entity.UserRole;
+import com.example.office.booking.repository.UserRoleRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,10 +1,10 @@
-package com.example.real.estate.agency.service;
+package com.example.office.booking.service;
 
-import com.example.real.estate.agency.entity.User;
-import com.example.real.estate.agency.entity.UserDTO;
-import com.example.real.estate.agency.entity.UserRole;
-import com.example.real.estate.agency.repository.UserRepository;
-import com.example.real.estate.agency.repository.UserRoleRepository;
+import com.example.office.booking.entity.User;
+import com.example.office.booking.entity.UserDTO;
+import com.example.office.booking.entity.UserRole;
+import com.example.office.booking.repository.UserRepository;
+import com.example.office.booking.repository.UserRoleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

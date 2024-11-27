@@ -1,6 +1,6 @@
-package com.example.real.estate.agency.repository;
+package com.example.office.booking.repository;
 
-import com.example.real.estate.agency.entity.UserRole;
+import com.example.office.booking.entity.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRoleRepository extends JpaRepository<UserRole, Integer> {

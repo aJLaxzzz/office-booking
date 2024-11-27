@@ -1,6 +1,6 @@
-package com.example.real.estate.agency.service;
+package com.example.office.booking.service;
 
-import com.example.real.estate.agency.repository.UserRepository;
+import com.example.office.booking.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

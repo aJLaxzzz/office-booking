@@ -1,6 +1,6 @@
-package com.example.real.estate.agency.service;
+package com.example.office.booking.service;
 
-import com.example.real.estate.agency.entity.User;
+import com.example.office.booking.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

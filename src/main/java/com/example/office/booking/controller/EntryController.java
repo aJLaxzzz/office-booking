@@ -1,7 +1,7 @@
-package com.example.real.estate.agency.controller;
+package com.example.office.booking.controller;
 
-import com.example.real.estate.agency.entity.UserDTO;
-import com.example.real.estate.agency.service.UserService;
+import com.example.office.booking.entity.UserDTO;
+import com.example.office.booking.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

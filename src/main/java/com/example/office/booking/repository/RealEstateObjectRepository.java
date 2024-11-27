@@ -1,8 +1,8 @@
-package com.example.real.estate.agency.repository;
+package com.example.office.booking.repository;
 
 // В RealEstateObjectRepository.java
 
-import com.example.real.estate.agency.entity.RealEstateObject;
+import com.example.office.booking.entity.RealEstateObject;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

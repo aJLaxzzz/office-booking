@@ -1,4 +1,4 @@
-package com.example.real.estate.agency;
+package com.example.office.booking;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
