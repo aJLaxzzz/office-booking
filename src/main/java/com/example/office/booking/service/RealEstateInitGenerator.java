@@ -112,7 +112,7 @@ public class RealEstateInitGenerator {
 
     @PostConstruct
     public void fillDatabase() {
-        List<RealEstateObject> realEstateObjects = generateRealEstateObjects(200);
+        List<RealEstateObject> realEstateObjects = generateRealEstateObjects(5);
         realEstateObjectRepository.saveAll(realEstateObjects);
 
     }
