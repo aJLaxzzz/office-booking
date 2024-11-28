@@ -1,7 +1,9 @@
 package com.example.office.booking.controller;
 
+import com.example.office.booking.entity.Booking;
 import com.example.office.booking.entity.RealEstateObject;
 import com.example.office.booking.entity.User;
+import com.example.office.booking.repository.BookingRepository;
 import com.example.office.booking.repository.RealEstateObjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -14,6 +16,7 @@ import com.example.office.booking.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class HousesController {
@@ -22,6 +25,9 @@ public class HousesController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
 
 
     @GetMapping("/houses")
@@ -68,6 +74,45 @@ public class HousesController {
         model.addAttribute("realEstateObjects", realEstateObjectRepository.findAll());
         return "admin";
     }
+
+
+    @GetMapping("/account")
+    public String account(Model model, Authentication authentication) {
+        // Получаем имя текущего пользователя
+        String username = authentication.getName();
+
+        // Получаем пользователя из базы данных по имени
+        Optional<User> userOptional = userRepository.findUserByName(username);
+
+        // Если пользователь найден, получаем его, иначе возвращаем null
+        User user = userOptional.orElse(null);
+
+        // Если пользователь найден, получаем его ID
+        Long userId = (user != null) ? user.getId() : null;
+
+        // Добавляем информацию о текущем пользователе в модель
+        model.addAttribute("userId", userId);
+
+        // Получаем все бронирования текущего пользователя, если он найден
+        if (userId != null) {
+            List<Booking> userBookings = bookingRepository.findByUserId(userId);
+            model.addAttribute("userBookings", userBookings);
+
+            // Получаем список объектов недвижимости, которые забронированы этим пользователем
+            List<Long> objectIds = userBookings.stream()
+                    .map(Booking::getObjectId)
+                    .collect(Collectors.toList());
+            if (!objectIds.isEmpty()) {
+                List<RealEstateObject> bookedObjects = realEstateObjectRepository.findByIdIn(objectIds);
+                model.addAttribute("bookedRealEstateObjects", bookedObjects);
+            } else {
+                model.addAttribute("bookedRealEstateObjects", List.of()); // Если нет забронированных объектов
+            }
+        }
+
+        return "account";
+    }
+
 
 
     @GetMapping("/search")

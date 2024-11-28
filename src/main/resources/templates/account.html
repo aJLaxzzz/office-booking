@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Office Booking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
     <style>
         body {
             background-color: #121212; /* Темный фон */
@@ -219,47 +220,19 @@
 <body>
 <header>
     <div class="header-content">
-        <h1>Office Booking</h1>
+        <h1>Welcome, User</h1>
     </div>
 </header>
-<!-- Перемещаем функцию fetchBookings в начало, чтобы она была доступна для всех вызовов -->
-<script>
-    // Функция для загрузки бронирований с сервера
-    function fetchBookings(objectId) {
-        const url = `/object/${objectId}`;  // Указываем ваш API URL
-
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const bookingsContainer = document.getElementById('bookings-' + objectId);
-
-                if (data.length === 0) {
-                    bookingsContainer.innerHTML = '<p>Нет бронирований.</p>';
-                } else {
-                    // Очистим блок и добавим информацию о бронированиях
-                    bookingsContainer.innerHTML = '';
-                    data.forEach(booking => {
-                        const bookingItem = document.createElement('p');
-                        bookingItem.textContent = `Дата начала: ${booking.startDate}, Дата окончания: ${booking.endDate}`;
-                        bookingsContainer.appendChild(bookingItem);
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка при загрузке бронирований:', error);
-                const bookingsContainer = document.getElementById('bookings-' + objectId);
-                bookingsContainer.innerHTML = '<p>Не удалось загрузить бронирования.</p>';
-            });
-    }
-</script>
 
 <div class="container">
-    <!-- Display Real Estate Listings -->
-    <div th:if="${realEstateObjects.isEmpty()}">
-        <p>Нет доступных предложений недвижимости.</p>
+    <h2>Your Bookings:</h2>
+
+    <!-- Если у пользователя есть бронирования, показываем их -->
+    <div th:if="${bookedRealEstateObjects.isEmpty()}">
+        <p>Вы не забронировали никаких объектов недвижимости.</p>
     </div>
-    <div th:unless="${realEstateObjects.isEmpty()}">
-        <div th:each="realEstateObject : ${realEstateObjects}" class="real-estate-listing">
+    <div th:unless="${bookedRealEstateObjects.isEmpty()}">
+        <div th:each="realEstateObject : ${bookedRealEstateObjects}" class="real-estate-listing">
             <h2 th:text="${realEstateObject.address}">Адрес</h2>
             <img th:src="@{${realEstateObject.photoURL}}" alt="Изображение недвижимости">
             <p th:text="'Площадь: ' + ${realEstateObject.area} + ' кв. м.'">Площадь</p>
@@ -268,28 +241,23 @@
             <p th:text="'Год постройки: ' + ${realEstateObject.buildYear}">Год постройки</p>
             <p th:text="'Этаж: ' + ${realEstateObject.floor}">Этаж</p>
 
-            <!-- Вывод бронирований -->
-            <div id="bookings-${realEstateObject.id}" class="bookings-list">
-                <p>Загружаю бронирования...</p>
+            <!-- Display booking details -->
+            <div>
+                <h3>Информация о бронировании:</h3>
+                <ul>
+                    <th:block th:each="booking : ${userBookings}">
+                        <th:block th:if="${booking.objectId == realEstateObject.id}">
+                            <li>
+                                <p>Дата начала: <span th:text="${booking.startDate}"></span></p>
+                                <p>Дата окончания: <span th:text="${booking.endDate}"></span></p>
+                            </li>
+                        </th:block>
+                    </th:block>
+                </ul>
             </div>
-
-            <!-- Добавим атрибут с id объекта для использования в JavaScript -->
-            <script th:inline="javascript">
-                /*<![CDATA[*/
-                fetchBookings([[${realEstateObject.id}]]);
-                /*]]>*/
-            </script>
         </div>
     </div>
 </div>
 
-
-
-
-
-
 </body>
-<footer>
-    © 2024 Office Booking. Chernykh Timofei ИКБО-36-22.
-</footer>
 </html>

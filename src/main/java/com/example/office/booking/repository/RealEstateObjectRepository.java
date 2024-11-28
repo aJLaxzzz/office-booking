@@ -35,5 +35,7 @@ public interface RealEstateObjectRepository extends JpaRepository<RealEstateObje
             @Param("floorMin") Integer floorMin,
             @Param("floorMax") Integer floorMax,
             Sort sort);
+
+    List<RealEstateObject> findByIdIn(List<Long> objectIds);
 }
 
