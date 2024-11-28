@@ -170,6 +170,50 @@
             background-color: #1f2833; /* Изменение фона заголовка при наведении */
         }
 
+       /* Стили для кнопки бронирования */
+    .booking-button {
+        padding: 12px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 5px;
+        background-color: #45a29e;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .booking-button:hover {
+        background-color: #ff5555;
+        transform: scale(1.05);
+    }
+
+    /* Стили для полей ввода даты */
+    input[type="date"] {
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        background-color: #0b0c10;
+        color: #66fcf1;
+        width: 100%;
+        margin-bottom: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    input[type="date"]:focus {
+        background-color: #45a29e;
+        outline: none;
+    }
+
+    /* Дополнительные стили для лейблов */
+    label {
+        font-size: 14px;
+        color: #66fcf1;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+
     </style>
 </head>
 <body>
@@ -220,11 +264,65 @@
             <p th:text="'Описание: ' + ${realEstateObject.description}">Описание</p>
             <p th:text="'Год постройки: ' + ${realEstateObject.buildYear}">Год постройки</p>
             <p th:text="'Этаж: ' + ${realEstateObject.floor}">Этаж</p>
+
+            <!-- Поля для ввода даты начала и окончания, только по дням -->
+            <label for="startDate">Дата начала:</label>
+            <input type="date" id="startDate" name="startDate" required>
+
+            <label for="endDate">Дата окончания:</label>
+            <input type="date" id="endDate" name="endDate" required>
+
+            <button th:onclick="'addRequest(' + ${realEstateObject.id} + ', ' + ${userId} + ')'" class="booking-button">Заинтересован</button>
         </div>
     </div>
-</div>
-<footer>
+
+    <script>
+        function addRequest(objectId, userId) {
+            // Получаем выбранные пользователем даты (теперь без времени)
+            var startDate = document.getElementById('startDate').value;
+            var endDate = document.getElementById('endDate').value;
+
+            // Проверка на правильность введенных данных
+            if (!startDate || !endDate) {
+                alert('Пожалуйста, выберите дату начала и окончания');
+                return;
+            }
+
+            // Конвертируем выбранные даты в формат с временем 00:00:00 (чтобы не было времени)
+            startDate += "T00:00:00";
+            endDate += "T00:00:00";
+
+            var requestData = {
+                userId: userId,
+                objectId: objectId,
+                startDate: startDate,
+                endDate: endDate
+            };
+
+            fetch('/api/booking', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Request added successfully');
+                    alert("ok");
+                } else {
+                    console.error('Failed to add request');
+                    alert(objectId + " " + userId);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ne ok');
+            });
+        }
+    </script>
+</body>
+    <footer>
     © 2024 Office Booking. Chernykh Timofei ИКБО-36-22.
 </footer>
-</body>
 </html>

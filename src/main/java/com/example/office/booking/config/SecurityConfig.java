@@ -23,7 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
-/*@Configuration
+@Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
@@ -33,7 +33,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new AppUserDetailsService();s
+        return new AppUserDetailsService();
     }
 
     @Bean
@@ -86,7 +86,7 @@ public class SecurityConfig {
         return successHandler;
     }
 }
-*/
+/*
 
 @Configuration
 @EnableWebSecurity
@@ -105,4 +105,4 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();  // Вы можете использовать другой PasswordEncoder, если необходимо
     }
-}
+}*/

@@ -1,8 +1,10 @@
 package com.example.office.booking.repository;
 
 import com.example.office.booking.entity.Booking;
+import com.example.office.booking.entity.RealEstateObject;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

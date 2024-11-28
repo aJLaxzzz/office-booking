@@ -31,23 +31,38 @@ public class BookingController {
 
     @PostMapping
     public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
-        // Проверка, что дата начала меньше даты окончания
+        // 1. Проверка, что дата начала меньше даты окончания
         if (booking.getStartDate().isAfter(booking.getEndDate())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(null);  // Неверный формат дат
         }
 
-        // Проверка на занятость объекта в указанный период
+        // 2. Проверка на наличие бронирования для этого объекта недвижимости на этот период
         List<Booking> conflictingBookings = bookingRepository.findByObjectIdAndStartDateBeforeAndEndDateAfter(
                 booking.getObjectId(), booking.getEndDate(), booking.getStartDate());
 
-        if (!conflictingBookings.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // Конфликт бронирования
+        // Дополнительная логика для учета пересечений, включая даты окончания (включительно)
+        for (Booking existingBooking : conflictingBookings) {
+            // Пересечение если:
+            // - новое бронирование начинается до конца уже существующего и заканчивается после его начала
+            // - новое бронирование начинается с даты окончания другого бронирования (когда даты совпадают)
+            // То есть, дата начала нового бронирования не может быть той же, что и дата окончания существующего бронирования
+            if (!(booking.getEndDate().isBefore(existingBooking.getStartDate()) ||
+                    booking.getStartDate().isAfter(existingBooking.getEndDate()) ||
+                    booking.getStartDate().isEqual(existingBooking.getEndDate()) || // не может начинаться в день окончания другого
+                    booking.getEndDate().isEqual(existingBooking.getStartDate()))) {  // не может заканчиваться в день начала другого
+                return ResponseEntity.status(HttpStatus.CONFLICT).build(); // Конфликт бронирования
+            }
         }
 
+        // Если все проверки пройдены, сохраняем бронирование
         Booking savedBooking = bookingRepository.save(booking);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedBooking);
     }
+
+
+
+
 
     @PutMapping("/{id}")
     public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking updatedBooking) {
