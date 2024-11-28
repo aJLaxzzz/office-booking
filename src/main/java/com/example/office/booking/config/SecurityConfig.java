@@ -77,7 +77,7 @@ public class SecurityConfig {
                 UserRole userRole = userRoleRepository.getUserRoleById(user.getId());
 
                 return switch (userRole.role) {
-                    case ADMIN -> "/add";
+                    case ADMIN -> "/admin";
                     case USER -> "/houses";
                 };
             }

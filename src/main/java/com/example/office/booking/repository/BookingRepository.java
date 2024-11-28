@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
-    List<Booking> findRequestsByObjectId(Long objectId);
+    List<Booking> findByObjectId(Long objectId);
 
     // Метод для проверки, занят ли объект в указанный период
     List<Booking> findByObjectIdAndStartDateBeforeAndEndDateAfter(Long objectId, LocalDateTime endDate, LocalDateTime startDate);

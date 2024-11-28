@@ -29,6 +29,14 @@ public class BookingController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("object/{objectId}")
+    public ResponseEntity<List<Booking>> getBookingsByObjectId(@PathVariable Long objectId) {
+        List<Booking> bookings = bookingRepository.findByObjectId(objectId);
+        System.out.println("Загружено бронирований: " + bookings.size());
+        return ResponseEntity.ok(bookings);
+    }
+
+
     @PostMapping
     public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
         // 1. Проверка, что дата начала меньше даты окончания

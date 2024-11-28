@@ -222,35 +222,6 @@
         <h1>Office Booking</h1>
     </div>
 </header>
-<div class="form-container">
-    <h2>Фильтр</h2> <!-- Заголовок для формы фильтрации -->
-    <form th:action="@{/search}" method="get">
-        <input type="hidden" th:name="userId" th:value="${userId}">
-        <input type="text" name="address" placeholder="Адрес">
-        <input type="number" name="areaMin" placeholder="Мин Площадь">
-        <input type="number" name="areaMax" placeholder="Макс Площадь">
-        <input type="number" name="priceMin" placeholder="Мин Цена (₽)">
-        <input type="number" name="priceMax" placeholder="Макс Цена (₽)">
-        <input type="number" name="buildYearMin" placeholder="Мин Год Постройки">
-        <input type="number" name="buildYearMax" placeholder="Макс Год Постройки">
-        <input type="number" name="floorMin" placeholder="Мин Этаж">
-        <input type="number" name="floorMax" placeholder="Макс Этаж">
-        <select name="sortBy">
-            <option value="address">Сортировка по адресу</option>
-            <option value="area">Сортировка по площади</option>
-            <option value="price">Сортировка по цене</option>
-            <option value="buildYear">Сортировка по году постройки</option>
-            <option value="floor">Сортировка по этажу</option>
-        </select>
-        <select name="sortDirection">
-            <option value="asc">По возрастанию</option>
-            <option value="desc">По убыванию</option>
-        </select>
-        <button type="submit">Поиск</button>
-    </form>
-    <a href="/logout" class="button logout-button">LOGOUT</a>
-</div>
-
 <div class="container">
     <!-- Display Real Estate Listings -->
     <div th:if="${realEstateObjects.isEmpty()}">
@@ -266,69 +237,56 @@
             <p th:text="'Год постройки: ' + ${realEstateObject.buildYear}">Год постройки</p>
             <p th:text="'Этаж: ' + ${realEstateObject.floor}">Этаж</p>
 
-            <!-- Поля для ввода даты начала и окончания, только по дням -->
-            <!-- Поля для ввода даты начала и окончания, уникальные для каждого объекта -->
-            <label th:for="'startDate-' + ${realEstateObject.id}">Дата начала:</label>
-            <input type="date" th:id="'startDate-' + ${realEstateObject.id}" th:name="'startDate-' + ${realEstateObject.id}" required>
+            <!-- Вывод бронирований -->
+            <div id="bookings-${realEstateObject.id}" class="bookings-list">
+                <p>Загружаю бронирования...</p>
+            </div>
 
-            <label th:for="'endDate-' + ${realEstateObject.id}">Дата окончания:</label>
-            <input type="date" th:id="'endDate-' + ${realEstateObject.id}" th:name="'endDate-' + ${realEstateObject.id}" required>
-
-            <button th:onclick="'addRequest(' + ${realEstateObject.id} + ', ' + ${userId} + ')'" class="booking-button">Заинтересован</button>
-
+            <!-- Добавим атрибут с id объекта для использования в JavaScript -->
+            <script th:inline="javascript">
+                /*<![CDATA[*/
+                fetchBookings([[${realEstateObject.id}]]);
+                /*]]>*/
+            </script>
         </div>
     </div>
 </div>
-    <script>
-        function addRequest(objectId, userId) {
-            var startDateId = 'startDate-' + objectId;
-        var endDateId = 'endDate-' + objectId;
 
-        // Получаем выбранные пользователем даты
-        var startDate = document.getElementById(startDateId).value;
-        var endDate = document.getElementById(endDateId).value;
+<script>
+    // Функция для загрузки бронирований с сервера
+    function fetchBookings(objectId) {
+        const url = `/object/${objectId}`;  // Указываем ваш API URL
 
-        // Проверка на правильность введенных данных
-        if (!startDate || !endDate) {
-            alert('Пожалуйста, выберите дату начала и окончания');
-            return;
-        }
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const bookingsContainer = document.getElementById('bookings-' + objectId);
 
-        // Конвертируем выбранные даты в формат с временем 00:00:00
-        startDate += "T00:00:00";
-        endDate += "T00:00:00";
-
-        var requestData = {
-            userId: userId,
-            objectId: objectId,
-            startDate: startDate,
-            endDate: endDate
-        };
-
-        fetch('/api/booking', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(requestData)
-        })
-        .then(response => {
-            if (response.ok) {
-                console.log('Request added successfully');
-                alert("ok");
-            } else {
-                console.error('Failed to add request');
-                alert(objectId + " " + userId);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Ne ok');
-        });
+                if (data.length === 0) {
+                    bookingsContainer.innerHTML = '<p>Нет бронирований.</p>';
+                } else {
+                    // Очистим блок и добавим информацию о бронированиях
+                    bookingsContainer.innerHTML = '';
+                    data.forEach(booking => {
+                        const bookingItem = document.createElement('p');
+                        bookingItem.textContent = `Дата начала: ${booking.startDate}, Дата окончания: ${booking.endDate}`;
+                        bookingsContainer.appendChild(bookingItem);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка при загрузке бронирований:', error);
+                const bookingsContainer = document.getElementById('bookings-' + objectId);
+                bookingsContainer.innerHTML = '<p>Не удалось загрузить бронирования.</p>';
+            });
     }
-    </script>
+</script>
+
+
+
+
 </body>
-    <footer>
+<footer>
     © 2024 Office Booking. Chernykh Timofei ИКБО-36-22.
 </footer>
 </html>
