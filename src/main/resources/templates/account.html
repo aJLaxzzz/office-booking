@@ -227,12 +227,12 @@
 <div class="container">
     <h2>Your Bookings:</h2>
 
-    <!-- Если у пользователя есть бронирования, показываем их -->
     <div th:if="${bookedRealEstateObjects.isEmpty()}">
         <p>Вы не забронировали никаких объектов недвижимости.</p>
     </div>
+
     <div th:unless="${bookedRealEstateObjects.isEmpty()}">
-        <div th:each="realEstateObject : ${bookedRealEstateObjects}" class="real-estate-listing">
+        <div th:each="realEstateObject : ${bookedRealEstateObjects}" class="real-estate-listing" th:id="'object-' + ${realEstateObject.id}">
             <h2 th:text="${realEstateObject.address}">Адрес</h2>
             <img th:src="@{${realEstateObject.photoURL}}" alt="Изображение недвижимости">
             <p th:text="'Площадь: ' + ${realEstateObject.area} + ' кв. м.'">Площадь</p>
@@ -241,7 +241,6 @@
             <p th:text="'Год постройки: ' + ${realEstateObject.buildYear}">Год постройки</p>
             <p th:text="'Этаж: ' + ${realEstateObject.floor}">Этаж</p>
 
-            <!-- Display booking details -->
             <div>
                 <h3>Информация о бронировании:</h3>
                 <ul>
@@ -250,6 +249,7 @@
                             <li>
                                 <p>Дата начала: <span th:text="${booking.startDate}"></span></p>
                                 <p>Дата окончания: <span th:text="${booking.endDate}"></span></p>
+                                <button class="delete-booking" th:data-booking-id="${booking.id}" th:data-object-id="${realEstateObject.id}" onclick="deleteBooking(this)">Удалить бронь</button>
                             </li>
                         </th:block>
                     </th:block>
@@ -259,5 +259,45 @@
     </div>
 </div>
 
+<script>
+    function deleteBooking(button) {
+    const bookingId = button.getAttribute('data-booking-id');
+    const objectId = button.getAttribute('data-object-id');
+    const url = `/api/booking/${bookingId}`; // Убедитесь, что путь соответствует вашему API
+
+    fetch(url, {
+        method: 'DELETE',
+    })
+    .then(response => {
+        if (response.ok) {
+            // Успешное удаление, удаляем элемент из DOM
+            const bookingItem = button.closest('li');
+            bookingItem.remove();
+
+            // Проверяем, остались ли другие бронирования для этого объекта
+            const realEstateListing = button.closest('.real-estate-listing');
+            if (realEstateListing) {
+                const remainingBookings = realEstateListing.querySelectorAll('li');
+                if (remainingBookings.length === 0) {
+                    // Если нет других бронирований, скрываем карточку объекта
+                    realEstateListing.remove();
+                }
+            }
+
+            alert('Бронь успешно удалена.');
+            location.reload();
+        } else {
+            alert('Ошибка при удалении бронирования. ID: ' + bookingId);
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        alert('Ошибка при удалении брони. Попробуйте еще раз.');
+    });
+}
+
+</script>
+
 </body>
 </html>
+

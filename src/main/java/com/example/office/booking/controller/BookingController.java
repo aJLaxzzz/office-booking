@@ -69,9 +69,6 @@ public class BookingController {
     }
 
 
-
-
-
     @PutMapping("/{id}")
     public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody Booking updatedBooking) {
         Optional<Booking> existingBookingOptional = bookingRepository.findById(id);
