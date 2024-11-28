@@ -70,6 +70,12 @@ public class HousesController {
         // Добавляем информацию о текущем пользователе в модель
         model.addAttribute("userId", userId);
 
+        // Добавляем всех пользователей в модель
+        List<User> allUsers = userRepository.findAll();
+        model.addAttribute("allUsers", allUsers);
+        for (User userr : allUsers) {
+            System.out.println(userr);
+        }
         // Добавляем объекты недвижимости
         model.addAttribute("realEstateObjects", realEstateObjectRepository.findAll());
         return "admin";

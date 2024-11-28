@@ -28,42 +28,64 @@
             <h3>Бронирования:</h3>
             <div class="bookings" th:data-object-id="${realEstateObject.id}"></div>
         </div>
-
     </div>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const bookingsContainers = document.querySelectorAll('.bookings');
+        const userMap = {}; // Создаем объект для сопоставления userId и информации о пользователе
 
-        bookingsContainers.forEach(function(container) {
-            const objectId = container.getAttribute('data-object-id'); // Получаем идентификатор объекта
-            console.log('Идентификатор объекта:', objectId);
-
-            fetch(`/api/booking/object/${objectId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Ошибка сети: ' + response.status);
-                    }
-                    return response.json();
-                })
-                .then(bookings => {
-                    if (bookings.length === 0) {
-                        container.innerHTML = '<p>Нет бронирований.</p>';
-                    } else {
-                        bookings.forEach(function(booking) {
-                            container.innerHTML += `<p>Бронирование ID: ${booking.id}, Дата начала: ${booking.startDate}, Дата окончания: ${booking.endDate}</p>`;
-                        });
-                    }
-                })
-                .catch(error => {
-                    console.error('Ошибка при загрузке бронирований для объекта ID: ' + objectId, error);
+        // Получаем всех пользователей через API
+        fetch('/api/users')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка сети: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(users => {
+                // Заполняем объект userMap
+                users.forEach(user => {
+                    userMap[user.id] = { name: user.name, email: user.email }; // Сохраняем имя и почту
                 });
-        });
+
+                // Теперь загружаем бронирования
+                loadBookings();
+            })
+            .catch(error => {
+                console.error('Ошибка при загрузке пользователей:', error);
+            });
+
+        function loadBookings() {
+            const bookingsContainers = document.querySelectorAll('.bookings');
+
+            bookingsContainers.forEach(function(container) {
+                const objectId = container.getAttribute('data-object-id'); // Получаем идентификатор объекта
+                console.log('Идентификатор объекта:', objectId);
+
+                fetch(`/api/booking/object/${objectId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Ошибка сети: ' + response.status);
+                        }
+                        return response.json();
+                    })
+                    .then(bookings => {
+                        if (bookings.length === 0) {
+                            container.innerHTML = '<p>Нет бронирований.</p>';
+                        } else {
+                            bookings.forEach(function(booking) {
+                                const user = userMap[booking.userId] || { name: 'Неизвестный пользователь', email: 'Неизвестная почта' }; // Получаем информацию о пользователе
+                                container.innerHTML += `<p>Пользователь: ${user.name}, Почта: ${user.email}, Дата начала: ${booking.startDate}, Дата окончания: ${booking.endDate}</p>`;
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Ошибка при загрузке бронирований для объекта ID: ' + objectId, error);
+                    });
+            });
+        }
     });
 </script>
-
-
-
 </body>
 </html>
