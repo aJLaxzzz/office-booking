@@ -34,44 +34,33 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    const bookingsContainers = document.querySelectorAll('.bookings');
+        const bookingsContainers = document.querySelectorAll('.bookings');
 
-    bookingsContainers.forEach(function(container) {
-        const objectId = container.getAttribute('data-object-id'); // Получаем идентификатор объекта
+        bookingsContainers.forEach(function(container) {
+            const objectId = container.getAttribute('data-object-id'); // Получаем идентификатор объекта
+            console.log('Идентификатор объекта:', objectId);
 
-        fetch(`/api/booking/object/${objectId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Ошибка сети: ' + response.status);
-                }
-                return response.json();
-            })
-            .then(bookings => {
-                if (bookings.length === 0) {
-                    container.innerHTML = '<p>Нет бронирований.</p>';
-                } else {
-                    bookings.forEach(function(booking) {
-                        // Предполагаем, что booking.user содержит информацию о пользователе
-                        const userName =
-                        const userEmail =
-
-                        container.innerHTML += `
-                            <p>
-                                Бронирование ID: ${booking.id},
-                                Дата начала: ${booking.startDate},
-                                Дата окончания: ${booking.endDate},
-                                Имя пользователя: ${userName},
-                                Email: ${userEmail}
-                            </p>`;
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Ошибка при загрузке бронирований для объекта ID: ' + objectId, error);
-            });
+            fetch(`/api/booking/object/${objectId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Ошибка сети: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(bookings => {
+                    if (bookings.length === 0) {
+                        container.innerHTML = '<p>Нет бронирований.</p>';
+                    } else {
+                        bookings.forEach(function(booking) {
+                            container.innerHTML += `<p>Бронирование ID: ${booking.id}, Дата начала: ${booking.startDate}, Дата окончания: ${booking.endDate}</p>`;
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка при загрузке бронирований для объекта ID: ' + objectId, error);
+                });
+        });
     });
-});
-
 </script>
 
 
