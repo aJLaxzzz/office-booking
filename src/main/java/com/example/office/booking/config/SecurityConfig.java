@@ -23,7 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
-@Configuration
+/*@Configuration
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
@@ -33,14 +33,14 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new AppUserDetailsService();
+        return new AppUserDetailsService();s
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) ->
-                        auth.requestMatchers("/login", "/register", "/", "/resources/**").permitAll()
+                        auth.requestMatchers("/login", "/register", "/", "/resources/**", "/api/bookings/**").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")
@@ -84,5 +84,25 @@ public class SecurityConfig {
         };
         successHandler.setUseReferer(true);
         return successHandler;
+    }
+}
+*/
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf(AbstractHttpConfigurer::disable)  // Отключаем CSRF защиту
+                .cors(AbstractHttpConfigurer::disable)   // Отключаем CORS
+                .authorizeRequests(auth -> auth
+                        .anyRequest().permitAll()   // Разрешаем доступ ко всем маршрутам
+                )
+                .build();
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();  // Вы можете использовать другой PasswordEncoder, если необходимо
     }
 }

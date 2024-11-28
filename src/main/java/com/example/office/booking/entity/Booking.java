@@ -1,12 +1,10 @@
 package com.example.office.booking.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
+
 
 @Entity
 @Getter
@@ -25,13 +23,9 @@ public class Booking {
     @Column(name="object_id", nullable=false)
     private Long objectId;
 
-    @Column(name="startTime", nullable=false)
-    private LocalDateTime startTime;
+    @Column(name="start_date", nullable=false)
+    private LocalDateTime startDate;
 
-    @Column(name="endTime", nullable=false)
-    private LocalDateTime endTime;
+    @Column(name="end_date", nullable=false)
+    private LocalDateTime endDate;
 }
-
-
-
-
