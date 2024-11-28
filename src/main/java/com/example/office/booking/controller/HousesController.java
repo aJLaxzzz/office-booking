@@ -11,11 +11,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.example.office.booking.repository.UserRepository;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -53,36 +53,27 @@ public class HousesController {
     }
 
 
-    @GetMapping("/api/booking/object/{objectId}")
-    public List<Map<String, Object>> getBookingsByObjectId(@PathVariable Long objectId) {
-        // Получите список бронирований для данного объекта
-        List<Booking> bookings = bookingRepository.findByObjectId(objectId);
+    @GetMapping("/admin")
+    public String admin(Model model, Authentication authentication) {
+        // Получаем имя текущего пользователя
+        String username = authentication.getName();
 
-        List<Map<String, Object>> bookingDetails = new ArrayList<>();
+        // Получаем пользователя из базы данных по имени
+        Optional<User> userOptional = userRepository.findUserByName(username);
 
-        for (Booking booking : bookings) {
-            Map<String, Object> bookingInfo = new HashMap<>();
-            bookingInfo.put("id", booking.getId());
-            bookingInfo.put("startDate", booking.getStartDate());
-            bookingInfo.put("endDate", booking.getEndDate());
+        // Если пользователь найден, получаем его, иначе возвращаем null
+        User user = userOptional.orElse(null);
 
-            // Получаем пользователя по userId
-            Optional<User> userOptional = userRepository.findById(booking.getUserId());
-            if (userOptional.isPresent()) {
-                User user = userOptional.get();
-                bookingInfo.put("userName", user.getName());
-                bookingInfo.put("userEmail", user.getEmail());
-            } else {
-                bookingInfo.put("userName", "Неизвестный пользователь");
-                bookingInfo.put("userEmail", "Неизвестный email");
-            }
+        // Если пользователь найден, получаем его ID
+        Long userId = (user != null) ? user.getId() : null;
 
-            bookingDetails.add(bookingInfo);
-        }
+        // Добавляем информацию о текущем пользователе в модель
+        model.addAttribute("userId", userId);
 
-        return bookingDetails;
+        // Добавляем объекты недвижимости
+        model.addAttribute("realEstateObjects", realEstateObjectRepository.findAll());
+        return "admin";
     }
-
 
 
     @GetMapping("/account")
