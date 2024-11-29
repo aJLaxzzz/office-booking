@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.example.office.booking.repository.UserRepository;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -81,39 +80,35 @@ public class HousesController {
         return "admin";
     }
 
-
     @GetMapping("/account")
     public String account(Model model, Authentication authentication) {
-        // Получаем имя текущего пользователя
         String username = authentication.getName();
-
-        // Получаем пользователя из базы данных по имени
         Optional<User> userOptional = userRepository.findUserByName(username);
-
-        // Если пользователь найден, получаем его, иначе возвращаем null
         User user = userOptional.orElse(null);
-
-        // Если пользователь найден, получаем его ID
         Long userId = (user != null) ? user.getId() : null;
 
-        // Добавляем информацию о текущем пользователе в модель
         model.addAttribute("userId", userId);
 
-        // Получаем все бронирования текущего пользователя, если он найден
         if (userId != null) {
+            // Получаем все букинги пользователя
             List<Booking> userBookings = bookingRepository.findByUserId(userId);
-            model.addAttribute("userBookings", userBookings);
 
-            // Получаем список объектов недвижимости, которые забронированы этим пользователем
-            List<Long> objectIds = userBookings.stream()
-                    .map(Booking::getObjectId)
+            // Сортируем букинги по дате начала
+            userBookings.sort(Comparator.comparing(Booking::getStartDate));
+
+            // Собираем данные для отображения, включая объект недвижимости для каждого букинга
+            List<Map<String, Object>> bookingCards = userBookings.stream()
+                    .map(booking -> {
+                        RealEstateObject realEstateObject = realEstateObjectRepository.findById(booking.getObjectId()).orElse(null);
+                        Map<String, Object> card = new HashMap<>();
+                        card.put("booking", booking);
+                        card.put("realEstateObject", realEstateObject);
+                        return card;
+                    })
+                    .filter(card -> card.get("realEstateObject") != null) // Исключаем букинги без объекта
                     .collect(Collectors.toList());
-            if (!objectIds.isEmpty()) {
-                List<RealEstateObject> bookedObjects = realEstateObjectRepository.findByIdIn(objectIds);
-                model.addAttribute("bookedRealEstateObjects", bookedObjects);
-            } else {
-                model.addAttribute("bookedRealEstateObjects", List.of()); // Если нет забронированных объектов
-            }
+
+            model.addAttribute("bookingCards", bookingCards);
         }
 
         return "account";
