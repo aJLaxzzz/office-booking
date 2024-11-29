@@ -57,15 +57,10 @@ public class MeetingRoomController {
     public ResponseEntity<Void> deleteMeetingRoom(@PathVariable Long id) {
         Optional<MeetingRoom> MeetingRoomOptional = meetingRoomRepository.findById(id);
         if (MeetingRoomOptional.isPresent()) {
-            // Получаем все бронирования, связанные с объектом недвижимости
             List<Booking> bookings = bookingRepository.findByObjectId(id);
-
-            // Удаляем все связанные бронирования
             if (!bookings.isEmpty()) {
                 bookingRepository.deleteAll(bookings);
             }
-
-            // Удаляем сам объект недвижимости
             meetingRoomRepository.deleteById(id);
 
             return ResponseEntity.noContent().build();
@@ -87,7 +82,6 @@ public class MeetingRoomController {
         Integer floorMin = params.containsKey("floorMin") ? Integer.parseInt(params.getFirst("floorMin")) : null;
         Integer floorMax = params.containsKey("floorMax") ? Integer.parseInt(params.getFirst("floorMax")) : null;
 
-        // Handle sorting
         String sortBy = params.getFirst("sortBy");
         String sortDirection = params.getFirst("sortDirection");
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);

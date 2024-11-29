@@ -31,22 +31,11 @@ public class HousesController {
 
     @GetMapping("/houses")
     public String homePage(Model model, Authentication authentication) {
-        // Получаем имя текущего пользователя
         String username = authentication.getName();
-
-        // Получаем пользователя из базы данных по имени
         Optional<User> userOptional = userRepository.findUserByName(username);
-
-        // Если пользователь найден, получаем его, иначе возвращаем null
         User user = userOptional.orElse(null);
-
-        // Если пользователь найден, получаем его ID
         Long userId = (user != null) ? user.getId() : null;
-
-        // Добавляем информацию о текущем пользователе в модель
         model.addAttribute("userId", userId);
-
-        // Добавляем объекты недвижимости
         model.addAttribute("meetingRooms", meetingRoomRepository.findAll());
         return "houses";
     }
@@ -54,28 +43,16 @@ public class HousesController {
 
     @GetMapping("/admin")
     public String admin(Model model, Authentication authentication) {
-        // Получаем имя текущего пользователя
         String username = authentication.getName();
-
-        // Получаем пользователя из базы данных по имени
         Optional<User> userOptional = userRepository.findUserByName(username);
-
-        // Если пользователь найден, получаем его, иначе возвращаем null
         User user = userOptional.orElse(null);
-
-        // Если пользователь найден, получаем его ID
         Long userId = (user != null) ? user.getId() : null;
-
-        // Добавляем информацию о текущем пользователе в модель
         model.addAttribute("userId", userId);
-
-        // Добавляем всех пользователей в модель
         List<User> allUsers = userRepository.findAll();
         model.addAttribute("allUsers", allUsers);
         for (User userr : allUsers) {
             System.out.println(userr);
         }
-        // Добавляем объекты недвижимости
         model.addAttribute("meetingRooms", meetingRoomRepository.findAll());
         return "admin";
     }
@@ -91,13 +68,8 @@ public class HousesController {
         model.addAttribute("username", username);
 
         if (userId != null) {
-            // Получаем все букинги пользователя
             List<Booking> userBookings = bookingRepository.findByUserId(userId);
-
-            // Сортируем букинги по дате начала
             userBookings.sort(Comparator.comparing(Booking::getStartDate));
-
-            // Собираем данные для отображения, включая объект недвижимости для каждого букинга
             List<Map<String, Object>> bookingCards = userBookings.stream()
                     .map(booking -> {
                         MeetingRoom meetingRoom = meetingRoomRepository.findById(booking.getObjectId()).orElse(null);

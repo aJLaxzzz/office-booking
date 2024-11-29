@@ -10,10 +10,7 @@ import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findByObjectId(Long objectId);
-
-    // Метод для проверки, занят ли объект в указанный период
     List<Booking> findByObjectIdAndStartDateBeforeAndEndDateAfter(Long objectId, LocalDateTime endDate, LocalDateTime startDate);
-
     List<Booking> findByUserId(Long userId);
     List<Booking> findByUserIdAndStartDateBeforeAndEndDateAfter(Long userId, LocalDateTime endDate, LocalDateTime startDate);
 

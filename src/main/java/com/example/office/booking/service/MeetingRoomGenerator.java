@@ -60,7 +60,7 @@ public class MeetingRoomGenerator {
         return IntStream.range(0, count).mapToObj(
                 i -> new MeetingRoom(
                         null,
-                        getRoomName(i), // Используем индекс для формирования названия
+                        getRoomName(i),
                         getRandomArea(),
                         getRandomInternetSpeed(),
                         getRandomCapacity(),

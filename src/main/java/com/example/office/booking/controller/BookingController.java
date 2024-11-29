@@ -42,31 +42,24 @@ public class BookingController {
 
     @PostMapping
     public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
-        // 0. Проверка, что дата начала не может быть меньше текущей
         if (booking.getStartDate().isBefore(LocalDateTime.now())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(null); // Невозможная дата начала
         }
-
-        // 1. Проверка, что дата начала меньше даты окончания
         if (booking.getStartDate().isAfter(booking.getEndDate())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(null); // Неверный формат дат
         }
-
-        // 2. Проверка на наличие конфликтов для объекта недвижимости
         List<Booking> conflictingBookingsForObject = bookingRepository.findByObjectIdAndStartDateBeforeAndEndDateAfter(
                 booking.getObjectId(), booking.getEndDate(), booking.getStartDate());
 
         for (Booking existingBooking : conflictingBookingsForObject) {
-            // Если даты пересекаются, кроме случаев, когда одно бронирование начинается в день окончания другого
             if (!(booking.getEndDate().isBefore(existingBooking.getStartDate()) ||
                     booking.getStartDate().isAfter(existingBooking.getEndDate()))) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build(); // Конфликт бронирования
             }
         }
 
-        // 3. Проверка на наличие конфликтов для пользователя
         List<Booking> conflictingBookingsForUser = bookingRepository.findByUserIdAndStartDateBeforeAndEndDateAfter(
                 booking.getUserId(), booking.getEndDate(), booking.getStartDate());
 
@@ -85,18 +78,16 @@ public class BookingController {
         if (existingBookingOptional.isPresent()) {
             updatedBooking.setId(id);
 
-            // Проверка, что дата начала меньше даты окончания
             if (updatedBooking.getStartDate().isAfter(updatedBooking.getEndDate())) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(null);  // Неверный формат дат
+                        .body(null);
             }
 
-            // Проверка на занятость объекта в указанный период
             List<Booking> conflictingBookings = bookingRepository.findByObjectIdAndStartDateBeforeAndEndDateAfter(
                     updatedBooking.getObjectId(), updatedBooking.getEndDate(), updatedBooking.getStartDate());
 
             if (!conflictingBookings.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).build(); // Конфликт бронирования
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
 
             Booking savedBooking = bookingRepository.save(updatedBooking);
