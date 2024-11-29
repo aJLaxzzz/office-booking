@@ -235,6 +235,7 @@
     <div th:unless="${realEstateObjects.isEmpty()}">
         <div th:each="realEstateObject : ${realEstateObjects}" class="real-estate-listing">
             <h2 th:text="${realEstateObject.name}">Название</h2>
+            <button class="delete-room"  th:data-object-id="${realEstateObject.id}" onclick="deleteRoom(this)" style="margin-left: 10px;">✖</button>
             <img th:src="@{${realEstateObject.photoURL}}" alt="Изображение недвижимости" class="img-fluid">
             <p th:text="'Площадь: ' + ${realEstateObject.area} + ' кв. м.'">Площадь</p>
             <p th:text="'Макс. количество человек: ' + ${realEstateObject.capacity}">Макс. количество человек</p>
@@ -249,81 +250,123 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const userMap = {}; // Создаем объект для сопоставления userId и информации о пользователе
+    function deleteRoom(button) {
+            const roomId = button.getAttribute('data-object-id');
+            const url = `/api/realestate/${roomId}`;
 
-        // Получаем всех пользователей через API
-        fetch('/api/users')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Ошибка сети: ' + response.status);
-                }
-                return response.json();
+            fetch(url, {
+                method: 'DELETE',
             })
-            .then(users => {
-                // Заполняем объект userMap
-                users.forEach(user => {
-                    userMap[user.id] = { name: user.name, email: user.email }; // Сохраняем имя и почту
+                .then(response => {
+                    if (response.ok) {
+                        alert('Переговорная удалена');
+                        location.reload();
+                    } else {
+                        alert('Ошибка при удалении переговорной. ID: ' + roomId);
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    alert('Ошибка при удалении переговорной. Попробуйте еще раз.');
+                });
+        }
+        function deleteBooking(button) {
+            const bookingId = button.getAttribute('data-booking-id');
+            const url = `/api/booking/${bookingId}`;
+
+            fetch(url, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Бронь успешно удалена.');
+                        location.reload();
+                    } else {
+                        alert('Ошибка при удалении бронирования. ID: ' + bookingId);
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    alert('Ошибка при удалении брони. Попробуйте еще раз.');
+                });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const userMap = {}; // Создаем объект для сопоставления userId и информации о пользователе
+
+            // Получаем всех пользователей через API
+            fetch('/api/users')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Ошибка сети: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(users => {
+                    // Заполняем объект userMap
+                    users.forEach(user => {
+                        userMap[user.id] = { name: user.name, email: user.email }; // Сохраняем имя и почту
+                    });
+
+                    // Теперь загружаем бронирования
+                    loadBookings();
+                })
+                .catch(error => {
+                    console.error('Ошибка при загрузке пользователей:', error);
                 });
 
-                // Теперь загружаем бронирования
-                loadBookings();
-            })
-            .catch(error => {
-                console.error('Ошибка при загрузке пользователей:', error);
-            });
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                const hours = String(date.getHours()).padStart(2, '0');
+                const minutes = String(date.getMinutes()).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
+                const year = String(date.getFullYear()).slice(-2); // Получаем последние 2 цифры года
 
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            const hours = String(date.getHours()).padStart(2, '0');
-            const minutes = String(date.getMinutes()).padStart(2, '0');
-            const day = String(date.getDate()).padStart(2, '0');
-            const month = String(date.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
-            const year = String(date.getFullYear()).slice(-2); // Получаем последние 2 цифры года
-
-            return `${hours}:${minutes} ${day}-${month}-${year}`;
-        }
+                return `${hours}:${minutes} ${day}-${month}-${year}`;
+            }
 
 
-        function loadBookings() {
-            const bookingsContainers = document.querySelectorAll('.bookings');
+            function loadBookings() {
+                const bookingsContainers = document.querySelectorAll('.bookings');
 
-            bookingsContainers.forEach(function(container) {
-                const objectId = container.getAttribute('data-object-id'); // Получаем идентификатор объекта
-                console.log('Идентификатор объекта:', objectId);
+                bookingsContainers.forEach(function(container) {
+                    const objectId = container.getAttribute('data-object-id'); // Получаем идентификатор объекта
+                    console.log('Идентификатор объекта:', objectId);
 
-                fetch(`/api/booking/object/${objectId}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Ошибка сети: ' + response.status);
-                        }
-                        return response.json();
-                    })
-                    .then(bookings => {
-                        if (bookings.length === 0) {
-                            container.innerHTML = '<p>Нет бронирований.</p>';
-                        } else {
-                            bookings.forEach(function(booking) {
-                                const user = userMap[booking.userId] || { name: 'Неизвестный пользователь', email: 'Неизвестная почта' }; // Получаем информацию о пользователе
+                    fetch(`/api/booking/object/${objectId}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Ошибка сети: ' + response.status);
+                            }
+                            return response.json();
+                        })
+                        .then(bookings => {
+                            if (bookings.length === 0) {
+                                container.innerHTML = '<p>Нет бронирований.</p>';
+                            } else {
+                                bookings.forEach(function(booking) {
+                                    const user = userMap[booking.userId] || { name: 'Неизвестный пользователь', email: 'Неизвестная почта' }; // Получаем информацию о пользователе
 
-                                const startDateFormatted = formatDate(booking.startDate);
-                                const endDateFormatted = formatDate(booking.endDate);
+                                    const startDateFormatted = formatDate(booking.startDate);
+                                    const endDateFormatted = formatDate(booking.endDate);
 
-                                // Вычисляем продолжительность в минутах
-                                const startDate = new Date(booking.startDate);
-                                const endDate = new Date(booking.endDate);
-                                const durationInMinutes = Math.floor((endDate - startDate) / (1000 * 60)); // В минутах
+                                    // Вычисляем продолжительность в минутах
+                                    const startDate = new Date(booking.startDate);
+                                    const endDate = new Date(booking.endDate);
+                                    const durationInMinutes = Math.floor((endDate - startDate) / (1000 * 60)); // В минутах
 
-                                container.innerHTML += `<p>Имя: ${user.name}, Почта: ${user.email}, Начало: ${startDateFormatted}, Конец: ${endDateFormatted}, Продолжительность: ${durationInMinutes} мин.</p>`;
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Ошибка при загрузке бронирований для объекта ID: ' + objectId, error);
-                    });
-            });
-        }
-    });
+                                    container.innerHTML += `<p>Имя: ${user.name}, Почта: ${user.email}, Начало: ${startDateFormatted}, Конец: ${endDateFormatted}, Продолжительность: ${durationInMinutes} мин.</p>`;
+                                    container.innerHTML += `<button class="delete-booking" data-booking-id="${booking.id}" data-object-id="${objectId}" onclick="deleteBooking(this)" style="margin-left: 10px;">✖</button>`;
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Ошибка при загрузке бронирований для объекта ID: ' + objectId, error);
+                        });
+                });
+            }
+        });
 </script>
 
 

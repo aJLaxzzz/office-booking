@@ -1,6 +1,8 @@
 package com.example.office.booking.controller;
 
+import com.example.office.booking.entity.Booking;
 import com.example.office.booking.entity.RealEstateObject;
+import com.example.office.booking.repository.BookingRepository;
 import com.example.office.booking.repository.RealEstateObjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -17,6 +19,9 @@ import java.util.Optional;
 public class RealEstateObjectController {
     @Autowired
     private RealEstateObjectRepository realEstateObjectRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
 
     @GetMapping
     public List<RealEstateObject> getAllRealEstateObjects() {
@@ -52,7 +57,17 @@ public class RealEstateObjectController {
     public ResponseEntity<Void> deleteRealEstateObject(@PathVariable Long id) {
         Optional<RealEstateObject> realEstateObjectOptional = realEstateObjectRepository.findById(id);
         if (realEstateObjectOptional.isPresent()) {
+            // Получаем все бронирования, связанные с объектом недвижимости
+            List<Booking> bookings = bookingRepository.findByObjectId(id);
+
+            // Удаляем все связанные бронирования
+            if (!bookings.isEmpty()) {
+                bookingRepository.deleteAll(bookings);
+            }
+
+            // Удаляем сам объект недвижимости
             realEstateObjectRepository.deleteById(id);
+
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
