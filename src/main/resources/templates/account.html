@@ -283,6 +283,28 @@
         transform: scale(1.05); /* Увеличение при наведении */
     }
 
+               .profile-button {
+    background-color: #66fcf1; /* Цвет фона для кнопки личного кабинета */
+    color: #0b0c10; /* Цвет текста */
+    text-align: center; /* Центрирование текста */
+    transition: background-color 0.3s, transform 0.2s; /* Плавный переход */
+    width: auto;
+    margin-top: 10px; /* Добавьте отступ сверху, если нужно */
+}
+
+.logout-button {
+    background-color: #ff5555; /* Красный фон для кнопки выхода */
+    text-align: center; /* Центрируем текст внутри кнопки */
+    margin-top: 10px; /* Добавьте отступ сверху, если нужно */
+    width: auto; /* Только такой ширины, как его содержимое */
+}
+
+        .centered-title {
+    text-align: center; /* Центрируем текст */
+    margin: 20px 0; /* Добавляем отступы сверху и снизу для лучшего визуального восприятия */
+}
+
+
 
 
 
@@ -299,7 +321,7 @@
     <a href="/houses" class="button profile-button">Бронирование</a>
 </div>
 <div class="container">
-    <h2 th:text="'Привет, ' + ${username} + '. Вот твои бронирования:'">Your Bookings:</h2>
+    <h2 class="centered-title" th:text="'Привет, ' + ${username} + '. Вот твои бронирования:'">Your Bookings:</h2>
 
     <div th:if="${bookingCards.isEmpty()}">
         <p>Вы не забронировали никаких объектов недвижимости.</p>

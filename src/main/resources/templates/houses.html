@@ -261,6 +261,11 @@
         margin: auto;
     }
 
+        .search {
+            width: 100%;
+        }
+
+
 
 
 
@@ -297,7 +302,7 @@
             <option value="asc">По возрастанию</option>
             <option value="desc">По убыванию</option>
         </select>
-        <button type="submit" class="button">Поиск</button>
+        <button type="submit" class="button search">Поиск</button>
     </form>
 
     <a href="/logout" class="button logout-button">LOGOUT</a>
@@ -411,10 +416,10 @@
         .then(response => {
             if (response.ok) {
                 console.log('Request added successfully');
-                alert("ok");
+                alert("Забронировано");
             } else {
                 console.error('Failed to add request');
-                alert(objectId + " " + userId);
+                alert("Не удалось забронировать");
             }
         })
         .catch(error => {
