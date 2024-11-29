@@ -80,6 +80,10 @@
     margin-top: 2px; /* Уменьшите отступ сверху для всех элементов формы */
 }
 
+.form-container select, input{
+    width: 100%
+}
+
 
 
         input, select, button, .button {
@@ -89,7 +93,7 @@
             border-radius: 5px;
             background-color: #0b0c10;
             color: #66fcf1;
-            width: 100%;
+
         }
 
         button, .button {
@@ -235,6 +239,27 @@
             margin-top: auto; /* Push to the bottom of the form container */
             width: auto; /* Only as wide as its content */
         }
+.booking-details {
+    display: flex;
+    align-items: center; /* Центрируем элементы по вертикали */
+    margin-bottom: 10px; /* Отступ снизу для разделения с другими элементами */
+}
+
+.booking-details label {
+    margin-right: 5px; /* Отступ между меткой и полем ввода */
+}
+
+.booking-details input,
+.booking-details select {
+    margin-right: 10px; /* Отступ между полями ввода */
+    flex: 1; /* Позволяет полям занимать равное пространство */
+}
+.booking-details select[name="duration"] {
+    width: 200px; /* Установите желаемую ширину */
+    min-width: 200px; /* Убедитесь, что ширина не меньше этого значения */
+    margin: auto;
+}
+
 
 
 
@@ -296,42 +321,43 @@
             <p th:text="'Скорость интернета: ' + ${realEstateObject.internetSpeed} + 'Мбит/с'">Скорость интернета</p>
             <p th:text="'Этаж: ' + ${realEstateObject.floor}">Этаж</p>
 
-            <!-- Поля для ввода даты и времени -->
-            <label th:for="'startDate-' + ${realEstateObject.id}">Дата начала:</label>
-            <input type="date" th:id="'startDate-' + ${realEstateObject.id}" th:name="'startDate-' + ${realEstateObject.id}" required>
+            <div class="booking-details">
+                <label th:for="'startDate-' + ${realEstateObject.id}">Дата начала:</label>
+                <input type="date" th:id="'startDate-' + ${realEstateObject.id}" th:name="'startDate-' + ${realEstateObject.id}" required>
 
-            <label th:for="'startHour-' + ${realEstateObject.id}">Часы:</label>
-            <select th:id="'startHour-' + ${realEstateObject.id}" th:name="'startHour-' + ${realEstateObject.id}" required>
-                <!-- Часы от 8 до 20 -->
-                <option value="08">8</option>
-                <option value="09">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-            </select>
+                <label th:for="'startHour-' + ${realEstateObject.id}">Часы:</label>
+                <select th:id="'startHour-' + ${realEstateObject.id}" th:name="'startHour-' + ${realEstateObject.id}" required>
+                    <!-- Часы от 8 до 20 -->
+                    <option value="08">8</option>
+                    <option value="09">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                </select>
 
-            <label th:for="'startMinute-' + ${realEstateObject.id}">Минуты:</label>
-            <select th:id="'startMinute-' + ${realEstateObject.id}" th:name="'startMinute-' + ${realEstateObject.id}" required>
-                <option value="00">00</option>
-                <option value="30">30</option>
-            </select>
+                <label th:for="'startMinute-' + ${realEstateObject.id}">Минуты:</label>
+                <select th:id="'startMinute-' + ${realEstateObject.id}" th:name="'startMinute-' + ${realEstateObject.id}" required>
+                    <option value="00">00</option>
+                    <option value="30">30</option>
+                </select>
 
-            <label th:for="'duration-' + ${realEstateObject.id}">Продолжительность:</label>
-            <select th:id="'duration-' + ${realEstateObject.id}" th:name="'duration-' + ${realEstateObject.id}" required>
+                <label th:for="'duration-' + ${realEstateObject.id}">Продолжительность:</label>
+                <select th:id="'duration-' + ${realEstateObject.id}" th:name="'duration-' + ${realEstateObject.id}" required>
+                    <option value="30">30 минут</option>
+                    <option value="60">1 час</option>
+                    <option value="90">1.5 часа</option>
+                    <option value="120">2 часа</option>
+                </select>
+            </div>
 
-                <option value="30">30 минут</option>
-                <option value="60">1 час</option>
-                <option value="90">1.5 часа</option>
-                <option value="120">2 часа</option>
-            </select>
 
             <button th:onclick="'addRequest(' + ${realEstateObject.id} + ', ' + ${userId} + ')'" class="booking-button">Заинтересован</button>
 
