@@ -220,12 +220,11 @@
 <body>
 <header>
     <div class="header-content">
-        <h1>Welcome, User</h1>
+        <h1 >Meeting Room Booking</h1>
     </div>
 </header>
-
+<h2 th:text="'Привет, ' + ${username} + '. Вот твои бронирования:'">Your Bookings:</h2>
 <div class="container">
-    <h2>Your Bookings:</h2>
 
     <div th:if="${bookingCards.isEmpty()}">
         <p>Вы не забронировали никаких объектов недвижимости.</p>
@@ -332,6 +331,8 @@
             });
     }
 </script>
-
+<footer>
+    © 2024 Office Booking. Chernykh Timofei ИКБО-36-22.
+</footer>
 </body>
 </html>

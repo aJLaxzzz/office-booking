@@ -88,6 +88,7 @@ public class HousesController {
         Long userId = (user != null) ? user.getId() : null;
 
         model.addAttribute("userId", userId);
+        model.addAttribute("username", username);
 
         if (userId != null) {
             // Получаем все букинги пользователя

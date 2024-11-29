@@ -2,7 +2,7 @@
 <html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Office Booking</title>
+    <title>Бронирование конференц-залов</title>
     <style>
         body {
             background-color: #121212; /* Темный фон */
@@ -58,20 +58,28 @@
         }
 
         .form-container {
-            width: 200px; /* Сделаем ширину формы немного уже */
-            background-color: #1f2833;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-            position: fixed;
-            right: 10px;
-            top: 100px; /* Начинаем форму немного ниже, чтобы было меньше перекрытия с header */
-            bottom: 100px; /* Оставим больше пространства до нижнего края экрана */
-            overflow-y: auto; /* Позволяем прокрутку внутри контейнера */
-            display: flex;
-            flex-direction: column;
-            z-index: 1001; /* Обеспечиваем, чтобы форма была поверх основного контента */
-        }
+    width: 200px; /* Сделаем ширину формы немного уже */
+    background-color: #1f2833;
+    margin-bottom: -2%;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    position: fixed;
+    right: 10px;
+    top: 100px; /* Начинаем форму немного ниже, чтобы было меньше перекрытия с header */
+    bottom: 100px; /* Оставим больше пространства до нижнего края экрана */
+    overflow-y: auto; /* Позволяем прокрутку внутри контейнера */
+    display: flex;
+    flex-direction: column;
+    z-index: 1001; /* Обеспечиваем, чтобы форма была поверх основного контента */
+}
+
+.form-container input,
+.form-container select,
+.form-container button {
+    margin-top: 2px; /* Уменьшите отступ сверху для всех элементов формы */
+}
+
 
 
         input, select, button, .button {
@@ -95,12 +103,7 @@
             transform: scale(1.05);
         }
 
-        .logout-button {
-            background-color: #ff5555; /* Red background for logout button */
-            text-align: center; /* Center the text inside the button */
-            margin-top: auto; /* Push to the bottom of the form container */
-            width: auto; /* Only as wide as its content */
-        }
+
 
         a {
             color: #66fcf1; /* Neon color for links */
@@ -213,13 +216,34 @@
         display: block;
     }
 
+        .profile-button {
+    background-color: #66fcf1; /* Цвет фона для кнопки личного кабинета */
+    color: #0b0c10; /* Цвет текста */
+    margin-top: auto; /* Отступ сверху */
+    text-align: center; /* Центрирование текста */
+    transition: background-color 0.3s, transform 0.2s; /* Плавный переход */
+    width: auto;
+}
+
+.profile-button:hover {
+    background-color: #45a29e; /* Цвет фона при наведении */
+    transform: scale(1.05); /* Увеличение при наведении */
+}
+        .logout-button {
+            background-color: #ff5555; /* Red background for logout button */
+            text-align: center; /* Center the text inside the button */
+            margin-top: auto; /* Push to the bottom of the form container */
+            width: auto; /* Only as wide as its content */
+        }
+
+
 
     </style>
 </head>
 <body>
 <header>
     <div class="header-content">
-        <h1>Office Booking</h1>
+        <h1>Meeting Room Booking</h1>
     </div>
 </header>
 <div class="form-container">
@@ -251,7 +275,10 @@
     </form>
 
     <a href="/logout" class="button logout-button">LOGOUT</a>
+    <a href="/account" class="button profile-button">Личный кабинет</a>
+
 </div>
+
 
 
 <div class="container">
@@ -370,10 +397,10 @@
     }
 </script>
 
-
-
-</body>
-    <footer>
+<footer>
     © 2024 Office Booking. Chernykh Timofei ИКБО-36-22.
 </footer>
+
+</body>
+
 </html>

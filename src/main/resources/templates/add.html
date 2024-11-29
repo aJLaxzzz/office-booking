@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
-    <title>Добавить офисное помещение</title>
+    <title>Добавить конференц-зал</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap">
     <style>
         body {
@@ -119,14 +119,14 @@
 </head>
 <body>
 <header>
-    <h1>Office Booking</h1>
+    <h1>Meeting Room Booking</h1>
 </header>
 <div class="container">
     <div class="button-container">
         <a href="/logout" class="button logout-button">LOGOUT</a>
         <a href="/admin" class="button houses-button">OFFICES</a>
     </div>
-    <h2>Добавление офисного помещения</h2>
+    <h2>Добавление конференц-зала</h2>
     <form id="propertyForm">
         <label for="name">Название:</label>
         <input type="text" id="name" name="name" required maxlength="500" />
@@ -145,9 +145,6 @@
         <button type="submit">Добавить объект</button>
     </form>
 </div>
-<footer>
-    © 2024 Office Booking. Chernykh Timofei ИКБО-36-22.
-</footer>
 <script>
     document.getElementById('propertyForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -179,5 +176,8 @@
         });
     });
 </script>
+<footer>
+    © 2024 Office Booking. Chernykh Timofei ИКБО-36-22.
+</footer>
 </body>
 </html>

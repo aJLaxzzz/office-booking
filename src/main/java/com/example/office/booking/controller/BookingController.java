@@ -42,6 +42,12 @@ public class BookingController {
 
     @PostMapping
     public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
+        // 0. Проверка, что дата начала не может быть меньше текущей
+        if (booking.getStartDate().isBefore(LocalDateTime.now())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(null); // Невозможная дата начала
+        }
+
         // 1. Проверка, что дата начала меньше даты окончания
         if (booking.getStartDate().isAfter(booking.getEndDate())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
