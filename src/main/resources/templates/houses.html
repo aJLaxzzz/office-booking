@@ -226,20 +226,21 @@
     <h2>Фильтр</h2> <!-- Заголовок для формы фильтрации -->
     <form th:action="@{/search}" method="get">
         <input type="hidden" th:name="userId" th:value="${userId}">
-        <input type="text" name="address" placeholder="Адрес">
+        <input type="text" name="name" placeholder="Название"> <!-- Добавлено поле для названия -->
+        <input type="text" name="description" placeholder="Описание"> <!-- Добавлено поле для описания -->
         <input type="number" name="areaMin" placeholder="Мин Площадь">
         <input type="number" name="areaMax" placeholder="Макс Площадь">
-        <input type="number" name="priceMin" placeholder="Мин Цена (₽)">
-        <input type="number" name="priceMax" placeholder="Макс Цена (₽)">
-        <input type="number" name="buildYearMin" placeholder="Мин Год Постройки">
-        <input type="number" name="buildYearMax" placeholder="Макс Год Постройки">
+        <input type="number" name="capacityMin" placeholder="Мин Вместимость"> <!-- Добавлено поле для вместимости -->
+        <input type="number" name="capacityMax" placeholder="Макс Вместимость"> <!-- Добавлено поле для вместимости -->
+        <input type="number" name="internetSpeedMin" placeholder="Мин Скорость Интернета"> <!-- Добавлено поле для скорости интернета -->
+        <input type="number" name="internetSpeedMax" placeholder="Макс Скорость Интернета"> <!-- Добавлено поле для скорости интернета -->
         <input type="number" name="floorMin" placeholder="Мин Этаж">
         <input type="number" name="floorMax" placeholder="Макс Этаж">
         <select name="sortBy">
-            <option value="address">Сортировка по адресу</option>
+            <option value="name">Сортировка по названию</option>
             <option value="area">Сортировка по площади</option>
-            <option value="price">Сортировка по цене</option>
-            <option value="buildYear">Сортировка по году постройки</option>
+            <option value="internetSpeed">Сортировка по скорости интернета</option>
+            <option value="capacity">Сортировка по Вместимости</option>
             <option value="floor">Сортировка по этажу</option>
         </select>
         <select name="sortDirection">
@@ -248,6 +249,7 @@
         </select>
         <button type="submit">Поиск</button>
     </form>
+
     <a href="/logout" class="button logout-button">LOGOUT</a>
 </div>
 
@@ -259,12 +261,12 @@
     </div>
     <div th:unless="${realEstateObjects.isEmpty()}">
         <div th:each="realEstateObject : ${realEstateObjects}" class="real-estate-listing">
-            <h2 th:text="${realEstateObject.address}">Адрес</h2>
+            <h2 th:text="${realEstateObject.name}">Название</h2>
             <img th:src="@{${realEstateObject.photoURL}}" alt="Изображение недвижимости">
             <p th:text="'Площадь: ' + ${realEstateObject.area} + ' кв. м.'">Площадь</p>
-            <p th:text="'Цена: $' + ${realEstateObject.price}">Цена</p>
+            <p th:text="'Макс. количество человек: ' + ${realEstateObject.capacity}">Макс. количество человек:</p>
             <p th:text="'Описание: ' + ${realEstateObject.description}">Описание</p>
-            <p th:text="'Год постройки: ' + ${realEstateObject.buildYear}">Год постройки</p>
+            <p th:text="'Скорость интернета: ' + ${realEstateObject.internetSpeed} + 'Мбит/с'">Скорость интернета</p>
             <p th:text="'Этаж: ' + ${realEstateObject.floor}">Этаж</p>
 
             <!-- Поля для ввода даты и времени -->

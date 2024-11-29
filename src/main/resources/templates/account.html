@@ -233,12 +233,12 @@
 
     <div th:unless="${bookingCards.isEmpty()}">
         <div th:each="card : ${bookingCards}" class="real-estate-listing" th:id="'object-' + ${card.realEstateObject.id}">
-            <h2 th:text="${card.realEstateObject.address}">Адрес</h2>
+            <h2 th:text="${card.realEstateObject.name}">Название</h2>
             <img th:src="@{${card.realEstateObject.photoURL}}" alt="Изображение недвижимости">
             <p th:text="'Площадь: ' + ${card.realEstateObject.area} + ' кв. м.'">Площадь</p>
-            <p th:text="'Цена: $' + ${card.realEstateObject.price}">Цена</p>
+            <p th:text="'Макс. количество человек: ' + ${card.realEstateObject.capacity}">Макс. количество человек</p>
             <p th:text="'Описание: ' + ${card.realEstateObject.description}">Описание</p>
-            <p th:text="'Год постройки: ' + ${card.realEstateObject.buildYear}">Год постройки</p>
+            <p th:text="'Скорость интернета: ' + ${card.realEstateObject.internetSpeed}+ 'Мбит/с'">Скорость интернета</p>
             <p th:text="'Этаж: ' + ${card.realEstateObject.floor}">Этаж</p>
 
             <div>

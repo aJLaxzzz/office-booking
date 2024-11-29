@@ -16,23 +16,23 @@ public class RealEstateObject {
     private Long id;
 
     @Column(nullable = false, length = 512)
-    private String address;
+    private String name;//
 
     @Column(name = "area_meters", nullable = false)
-    private int area;
+    private int area;//
 
     @Column(nullable = false)
-    private int price;
+    private int internetSpeed;
 
-    @Column(nullable = true, length = 1024)
-    private String description;
-
-    @Column(name = "build_year", nullable = false)
-    private int buildYear;
+    @Column(nullable = false)
+    private int capacity;//
 
     @Column(name = "floor", nullable = false)
-    private int floor;
+    private int floor;//
 
     @Column(name = "photo", nullable = false)
     private String photoURL;
+
+    @Column(nullable = true, length = 1024)
+    private String description;//
 }

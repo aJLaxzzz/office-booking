@@ -61,14 +61,14 @@ public class RealEstateObjectController {
 
     @GetMapping("/search")
     public List<RealEstateObject> searchRealEstateObjects(@RequestParam MultiValueMap<String, String> params) {
-        String address = params.getFirst("address");
+        String name = params.getFirst("name");
         String description = params.getFirst("description");
         Integer areaMin = params.containsKey("areaMin") ? Integer.parseInt(params.getFirst("areaMin")) : null;
         Integer areaMax = params.containsKey("areaMax") ? Integer.parseInt(params.getFirst("areaMax")) : null;
-        Integer priceMin = params.containsKey("priceMin") ? Integer.parseInt(params.getFirst("priceMin")) : null;
-        Integer priceMax = params.containsKey("priceMax") ? Integer.parseInt(params.getFirst("priceMax")) : null;
-        Integer buildYearMin = params.containsKey("buildYearMin") ? Integer.parseInt(params.getFirst("buildYearMin")) : null;
-        Integer buildYearMax = params.containsKey("buildYearMax") ? Integer.parseInt(params.getFirst("buildYearMax")) : null;
+        Integer capacityMin = params.containsKey("capacityMin") ? Integer.parseInt(params.getFirst("capacityMin")) : null;
+        Integer capacityMax = params.containsKey("capacityMax") ? Integer.parseInt(params.getFirst("capacityMax")) : null;
+        Integer internetSpeedMin = params.containsKey("internetSpeedMin") ? Integer.parseInt(params.getFirst("internetSpeedMin")) : null;
+        Integer internetSpeedMax = params.containsKey("internetSpeedMax") ? Integer.parseInt(params.getFirst("internetSpeedMax")) : null;
         Integer floorMin = params.containsKey("floorMin") ? Integer.parseInt(params.getFirst("floorMin")) : null;
         Integer floorMax = params.containsKey("floorMax") ? Integer.parseInt(params.getFirst("floorMax")) : null;
 
@@ -78,8 +78,8 @@ public class RealEstateObjectController {
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
 
         List<RealEstateObject> result = realEstateObjectRepository.findByCriteria(
-                address, description, areaMin, areaMax, priceMin, priceMax,
-                buildYearMin, buildYearMax, floorMin, floorMax, sort
+                name, description, areaMin, areaMax, capacityMin, capacityMax,
+                internetSpeedMin, internetSpeedMax, floorMin, floorMax, sort
         );
 
         return result;

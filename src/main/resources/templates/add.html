@@ -128,16 +128,16 @@
     </div>
     <h2>Добавление офисного помещения</h2>
     <form id="propertyForm">
-        <label for="address">Адрес:</label>
-        <input type="text" id="address" name="address" required maxlength="500" />
+        <label for="name">Название:</label>
+        <input type="text" id="name" name="name" required maxlength="500" />
         <label for="area">Площадь (в метрах квадратных):</label>
         <input type="number" id="area" name="area" required />
-        <label for="price">Цена:</label>
-        <input type="number" id="price" name="price" required />
+        <label for="capacity">Макс. количество человек:</label>
+        <input type="number" id="capacity" name="capacity" required />
         <label for="description">Описание:</label>
         <input type="text" id="description" name="description" maxlength="1000" />
-        <label for="buildYear">Год постройки:</label>
-        <input type="number" id="buildYear" name="buildYear" required />
+        <label for="internetSpeed">Скорость интернета:</label>
+        <input type="number" id="internetSpeed" name="internetSpeed" required />
         <label for="floor">Этаж:</label>
         <input type="number" id="floor" name="floor" required />
         <label for="photoURL">URL фотографии:</label>
@@ -152,11 +152,11 @@
     document.getElementById('propertyForm').addEventListener('submit', function(e) {
         e.preventDefault();
         var data = {
-            address: document.getElementById('address').value,
+            name: document.getElementById('name').value,
             area: parseInt(document.getElementById('area').value),
-            price: parseInt(document.getElementById('price').value),
+            capacity: parseInt(document.getElementById('capacity').value),
             description: document.getElementById('description').value,
-            buildYear: parseInt(document.getElementById('buildYear').value),
+            internetSpeed: parseInt(document.getElementById('internetSpeed').value),
             floor: parseInt(document.getElementById('floor').value),
             photoURL: document.getElementById('photoURL').value
         };

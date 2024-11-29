@@ -117,14 +117,14 @@ public class HousesController {
 
 
     @GetMapping("/search")
-    public String search(@RequestParam(required = false) String address,
+    public String search(@RequestParam(required = false) String name,
                          @RequestParam(required = false) String description,
                          @RequestParam(required = false) Integer areaMin,
                          @RequestParam(required = false) Integer areaMax,
-                         @RequestParam(required = false) Integer priceMin,
-                         @RequestParam(required = false) Integer priceMax,
-                         @RequestParam(required = false) Integer buildYearMin,
-                         @RequestParam(required = false) Integer buildYearMax,
+                         @RequestParam(required = false) Integer capacityMin,
+                         @RequestParam(required = false) Integer capacityMax,
+                         @RequestParam(required = false) Integer internetSpeedMin,
+                         @RequestParam(required = false) Integer internetSpeedMax,
                          @RequestParam(required = false) Integer floorMin,
                          @RequestParam(required = false) Integer floorMax,
                          @RequestParam(defaultValue = "address") String sortBy,
@@ -134,8 +134,8 @@ public class HousesController {
 
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
         List<RealEstateObject> searchResults = realEstateObjectRepository.findByCriteria(
-                address, description, areaMin, areaMax, priceMin, priceMax,
-                buildYearMin, buildYearMax, floorMin, floorMax, sort);
+                name, description, areaMin, areaMax, capacityMin, capacityMax,
+                internetSpeedMin, internetSpeedMax, floorMin, floorMax, sort);
 
         model.addAttribute("realEstateObjects", searchResults);
         model.addAttribute("userId", userId);
