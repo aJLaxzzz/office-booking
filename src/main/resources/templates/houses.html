@@ -78,6 +78,7 @@
 .form-container select,
 .form-container button {
     margin-top: 2px; /* Уменьшите отступ сверху для всех элементов формы */
+    width 100%;
 }
 
 .form-container select, input{
@@ -221,44 +222,44 @@
     }
 
         .profile-button {
-    background-color: #66fcf1; /* Цвет фона для кнопки личного кабинета */
-    color: #0b0c10; /* Цвет текста */
-    margin-top: auto; /* Отступ сверху */
-    text-align: center; /* Центрирование текста */
-    transition: background-color 0.3s, transform 0.2s; /* Плавный переход */
-    width: auto;
-}
+        background-color: #66fcf1; /* Цвет фона для кнопки личного кабинета */
+        color: #0b0c10; /* Цвет текста */
+        margin-top: auto; /* Отступ сверху */
+        text-align: center; /* Центрирование текста */
+        transition: background-color 0.3s, transform 0.2s; /* Плавный переход */
+        width: auto;
+    }
 
-.profile-button:hover {
-    background-color: #45a29e; /* Цвет фона при наведении */
-    transform: scale(1.05); /* Увеличение при наведении */
-}
-        .logout-button {
-            background-color: #ff5555; /* Red background for logout button */
-            text-align: center; /* Center the text inside the button */
-            margin-top: auto; /* Push to the bottom of the form container */
-            width: auto; /* Only as wide as its content */
-        }
-.booking-details {
-    display: flex;
-    align-items: center; /* Центрируем элементы по вертикали */
-    margin-bottom: 10px; /* Отступ снизу для разделения с другими элементами */
-}
+    .profile-button:hover {
+        background-color: #45a29e; /* Цвет фона при наведении */
+        transform: scale(1.05); /* Увеличение при наведении */
+    }
+    .logout-button {
+        background-color: #ff5555; /* Red background for logout button */
+        text-align: center; /* Center the text inside the button */
+        margin-top: auto; /* Push to the bottom of the form container */
+        width: auto; /* Only as wide as its content */
+    }
+    .booking-details {
+        display: flex;
+        align-items: center; /* Центрируем элементы по вертикали */
+        margin-bottom: 10px; /* Отступ снизу для разделения с другими элементами */
+    }
 
-.booking-details label {
-    margin-right: 5px; /* Отступ между меткой и полем ввода */
-}
+    .booking-details label {
+        margin-right: 5px; /* Отступ между меткой и полем ввода */
+    }
 
-.booking-details input,
-.booking-details select {
-    margin-right: 10px; /* Отступ между полями ввода */
-    flex: 1; /* Позволяет полям занимать равное пространство */
-}
-.booking-details select[name="duration"] {
-    width: 200px; /* Установите желаемую ширину */
-    min-width: 200px; /* Убедитесь, что ширина не меньше этого значения */
-    margin: auto;
-}
+    .booking-details input,
+    .booking-details select {
+        margin-right: 10px; /* Отступ между полями ввода */
+        flex: 1; /* Позволяет полям занимать равное пространство */
+    }
+    .booking-details select[name="duration"] {
+        width: 200px; /* Установите желаемую ширину */
+        min-width: 200px; /* Убедитесь, что ширина не меньше этого значения */
+        margin: auto;
+    }
 
 
 
@@ -296,7 +297,7 @@
             <option value="asc">По возрастанию</option>
             <option value="desc">По убыванию</option>
         </select>
-        <button type="submit">Поиск</button>
+        <button type="submit" class="button">Поиск</button>
     </form>
 
     <a href="/logout" class="button logout-button">LOGOUT</a>
@@ -359,7 +360,7 @@
             </div>
 
 
-            <button th:onclick="'addRequest(' + ${realEstateObject.id} + ', ' + ${userId} + ')'" class="booking-button">Заинтересован</button>
+            <button th:onclick="'addRequest(' + ${realEstateObject.id} + ', ' + ${userId} + ')'" class="booking-button">Забронировать</button>
 
         </div>
     </div>

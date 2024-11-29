@@ -59,20 +59,31 @@
         }
 
         .form-container {
-            width: 200px; /* Сделаем ширину формы немного уже */
-            background-color: #1f2833;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-            position: fixed;
-            right: 10px;
-            top: 100px; /* Начинаем форму немного ниже, чтобы было меньше перекрытия с header */
-            bottom: 100px; /* Оставим больше пространства до нижнего края экрана */
-            overflow-y: auto; /* Позволяем прокрутку внутри контейнера */
-            display: flex;
-            flex-direction: column;
-            z-index: 1001; /* Обеспечиваем, чтобы форма была поверх основного контента */
-        }
+    width: 200px; /* Сделаем ширину формы немного уже */
+
+    margin-bottom: -2%;
+    padding: 20px;
+    border-radius: 5px;
+    position: fixed;
+    right: 10px;
+    top: 100px; /* Начинаем форму немного ниже, чтобы было меньше перекрытия с header */
+    bottom: 100px; /* Оставим больше пространства до нижнего края экрана */
+    overflow-y: auto; /* Позволяем прокрутку внутри контейнера */
+    display: flex;
+    flex-direction: column;
+    z-index: 1001; /* Обеспечиваем, чтобы форма была поверх основного контента */
+}
+
+.form-container input,
+.form-container select,
+.form-container button {
+    margin-top: 2px; /* Уменьшите отступ сверху для всех элементов формы */
+}
+
+.form-container select, input{
+    width: 100%
+}
+
 
 
         input, select, button, .button {
@@ -82,7 +93,7 @@
             border-radius: 5px;
             background-color: #0b0c10;
             color: #66fcf1;
-            width: 100%;
+
         }
 
         button, .button {
@@ -96,12 +107,7 @@
             transform: scale(1.05);
         }
 
-        .logout-button {
-            background-color: #ff5555; /* Red background for logout button */
-            text-align: center; /* Center the text inside the button */
-            margin-top: auto; /* Push to the bottom of the form container */
-            width: auto; /* Only as wide as its content */
-        }
+
 
         a {
             color: #66fcf1; /* Neon color for links */
@@ -214,6 +220,71 @@
         display: block;
     }
 
+        .profile-button {
+    background-color: #66fcf1; /* Цвет фона для кнопки личного кабинета */
+    color: #0b0c10; /* Цвет текста */
+    margin-top: auto; /* Отступ сверху */
+    text-align: center; /* Центрирование текста */
+    transition: background-color 0.3s, transform 0.2s; /* Плавный переход */
+    width: auto;
+}
+
+.profile-button:hover {
+    background-color: #45a29e; /* Цвет фона при наведении */
+    transform: scale(1.05); /* Увеличение при наведении */
+}
+        .logout-button {
+            background-color: #ff5555; /* Red background for logout button */
+            text-align: center; /* Center the text inside the button */
+            margin-top: auto; /* Push to the bottom of the form container */
+            width: auto; /* Only as wide as its content */
+        }
+    .booking-details {
+        display: flex;
+        align-items: center; /* Центрируем элементы по вертикали */
+        margin-bottom: 10px; /* Отступ снизу для разделения с другими элементами */
+    }
+
+    .booking-details label {
+        margin-right: 5px; /* Отступ между меткой и полем ввода */
+    }
+
+    .booking-details input,
+    .booking-details select {
+        margin-right: 10px; /* Отступ между полями ввода */
+        flex: 1; /* Позволяет полям занимать равное пространство */
+    }
+    .booking-details select[name="duration"] {
+        width: 200px; /* Установите желаемую ширину */
+        min-width: 200px; /* Убедитесь, что ширина не меньше этого значения */
+        margin: auto;
+    }
+    .booking-info {
+    display: flex;
+    align-items: center; /* Центрируем элементы по вертикали */
+    }
+
+    .booking-info p {
+        margin: 0; /* Убираем отступы у параграфа */
+        margin-right: 10px; /* Отступ между текстом и кнопкой */
+    }
+    .delete-button {
+    background-color: #ff5555; /* Красный фон */
+    color: #fff; /* Белый текст */
+    border: none; /* Убираем рамку */
+    border-radius: 5px; /* Скругление углов */
+    padding: 5px 10px; /* Отступы */
+    cursor: pointer; /* Указатель при наведении */
+    transition: background-color 0.3s, transform 0.2s; /* Плавный переход */
+    }
+
+    .delete-button:hover {
+        background-color: #ff0000; /* Более яркий красный при наведении */
+        transform: scale(1.05); /* Увеличение при наведении */
+    }
+
+
+
 
     </style>
 </head>
@@ -223,8 +294,12 @@
         <h1 >Meeting Room Booking</h1>
     </div>
 </header>
-<h2 th:text="'Привет, ' + ${username} + '. Вот твои бронирования:'">Your Bookings:</h2>
+<div class="form-container">
+    <a href="/logout" class="button logout-button">LOGOUT</a>
+    <a href="/houses" class="button profile-button">Бронирование</a>
+</div>
 <div class="container">
+    <h2 th:text="'Привет, ' + ${username} + '. Вот твои бронирования:'">Your Bookings:</h2>
 
     <div th:if="${bookingCards.isEmpty()}">
         <p>Вы не забронировали никаких объектов недвижимости.</p>
@@ -242,12 +317,15 @@
 
             <div>
                 <h3>Информация о бронировании:</h3>
-                <p>
-                    Начало: <span th:text="${card.booking.startDate}" th:attr="data-start-date=${card.booking.startDate}" class="formatted-date"></span>
-                    Конец: <span th:text="${card.booking.endDate}" th:attr="data-end-date=${card.booking.endDate}" class="formatted-date"></span>
-                    <button class="delete-booking" th:data-booking-id="${card.booking.id}" th:data-object-id="${card.realEstateObject.id}" onclick="deleteBooking(this)" style="margin-left: 10px;">✖</button>
-                </p>
+                <div class="booking-info">
+                    <p class="duration">
+                        Начало: <span th:text="${card.booking.startDate}" th:attr="data-start-date=${card.booking.startDate}" class="formatted-date"></span>
+                        Конец: <span th:text="${card.booking.endDate}" th:attr="data-end-date=${card.booking.endDate}" class="formatted-date"></span>
+                    </p>
+                    <button class="delete-booking delete-button" th:data-booking-id="${card.booking.id}" th:data-object-id="${card.realEstateObject.id}" onclick="deleteBooking(this)">✖</button>
+                </div>
             </div>
+
         </div>
     </div>
 </div>
@@ -286,25 +364,26 @@
     }
 
     // Применяем форматирование и расчёт продолжительности
+    // Применяем форматирование и расчёт продолжительности
     document.querySelectorAll('.real-estate-listing').forEach(function (listing) {
-        const startDateElem = listing.querySelector('[data-start-date]');
-        const endDateElem = listing.querySelector('[data-end-date]');
-        const durationElem = document.createElement('p');
+    const startDateElem = listing.querySelector('[data-start-date]');
+    const endDateElem = listing.querySelector('[data-end-date]');
+    const durationElem = listing.querySelector('.duration'); // Находим элемент с классом duration
 
-        if (startDateElem && endDateElem) {
-            const startDate = startDateElem.getAttribute('data-start-date');
-            const endDate = endDateElem.getAttribute('data-end-date');
+    if (startDateElem && endDateElem && durationElem) {
+        const startDate = startDateElem.getAttribute('data-start-date');
+        const endDate = endDateElem.getAttribute('data-end-date');
 
-            // Форматируем даты
-            startDateElem.textContent = formatDate(startDate);
-            endDateElem.textContent = formatDate(endDate);
+        // Форматируем даты
+        startDateElem.textContent = formatDate(startDate);
+        endDateElem.textContent = formatDate(endDate);
 
-            // Вычисляем и добавляем продолжительность
-            const duration = calculateDuration(startDate, endDate);
-            durationElem.textContent = `Продолжительность: ${duration}`;
-            listing.appendChild(durationElem);
-        }
-    });
+        // Вычисляем и добавляем продолжительность
+        const duration = calculateDuration(startDate, endDate);
+        durationElem.textContent += `Продолжительность: ${duration}`; // Обновляем текст в элементе duration
+    }
+});
+
 
     // Удаление бронирования
     function deleteBooking(button) {
