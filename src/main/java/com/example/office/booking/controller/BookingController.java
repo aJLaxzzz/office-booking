@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Comparator;
+
 
 @RestController
 @RequestMapping("/api/booking")
@@ -32,6 +34,7 @@ public class BookingController {
     @GetMapping("object/{objectId}")
     public ResponseEntity<List<Booking>> getBookingsByObjectId(@PathVariable Long objectId) {
         List<Booking> bookings = bookingRepository.findByObjectId(objectId);
+        bookings.sort(Comparator.comparing(Booking::getStartDate));
         System.out.println("Загружено бронирований: " + bookings.size());
         return ResponseEntity.ok(bookings);
     }
@@ -42,28 +45,29 @@ public class BookingController {
         // 1. Проверка, что дата начала меньше даты окончания
         if (booking.getStartDate().isAfter(booking.getEndDate())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(null);  // Неверный формат дат
+                    .body(null); // Неверный формат дат
         }
 
-        // 2. Проверка на наличие бронирования для этого объекта недвижимости на этот период
-        List<Booking> conflictingBookings = bookingRepository.findByObjectIdAndStartDateBeforeAndEndDateAfter(
+        // 2. Проверка на наличие конфликтов для объекта недвижимости
+        List<Booking> conflictingBookingsForObject = bookingRepository.findByObjectIdAndStartDateBeforeAndEndDateAfter(
                 booking.getObjectId(), booking.getEndDate(), booking.getStartDate());
 
-        // Дополнительная логика для учета пересечений, включая даты окончания (включительно)
-        for (Booking existingBooking : conflictingBookings) {
-            // Пересечение если:
-            // - новое бронирование начинается до конца уже существующего и заканчивается после его начала
-            // - новое бронирование начинается с даты окончания другого бронирования (когда даты совпадают)
-            // То есть, дата начала нового бронирования не может быть той же, что и дата окончания существующего бронирования
+        for (Booking existingBooking : conflictingBookingsForObject) {
+            // Если даты пересекаются, кроме случаев, когда одно бронирование начинается в день окончания другого
             if (!(booking.getEndDate().isBefore(existingBooking.getStartDate()) ||
-                    booking.getStartDate().isAfter(existingBooking.getEndDate()) ||
-                    booking.getStartDate().isEqual(existingBooking.getEndDate()) || // не может начинаться в день окончания другого
-                    booking.getEndDate().isEqual(existingBooking.getStartDate()))) {  // не может заканчиваться в день начала другого
+                    booking.getStartDate().isAfter(existingBooking.getEndDate()))) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build(); // Конфликт бронирования
             }
         }
 
-        // Если все проверки пройдены, сохраняем бронирование
+        // 3. Проверка на наличие конфликтов для пользователя
+        List<Booking> conflictingBookingsForUser = bookingRepository.findByUserIdAndStartDateBeforeAndEndDateAfter(
+                booking.getUserId(), booking.getEndDate(), booking.getStartDate());
+
+        if (!conflictingBookingsForUser.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null); // Конфликт у пользователя
+        }
+
         Booking savedBooking = bookingRepository.save(booking);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedBooking);
     }

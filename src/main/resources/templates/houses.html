@@ -251,6 +251,7 @@
     <a href="/logout" class="button logout-button">LOGOUT</a>
 </div>
 
+
 <div class="container">
     <!-- Display Real Estate Listings -->
     <div th:if="${realEstateObjects.isEmpty()}">
@@ -266,43 +267,82 @@
             <p th:text="'Год постройки: ' + ${realEstateObject.buildYear}">Год постройки</p>
             <p th:text="'Этаж: ' + ${realEstateObject.floor}">Этаж</p>
 
-            <!-- Поля для ввода даты начала и окончания, только по дням -->
-            <!-- Поля для ввода даты начала и окончания, уникальные для каждого объекта -->
+            <!-- Поля для ввода даты и времени -->
             <label th:for="'startDate-' + ${realEstateObject.id}">Дата начала:</label>
             <input type="date" th:id="'startDate-' + ${realEstateObject.id}" th:name="'startDate-' + ${realEstateObject.id}" required>
 
-            <label th:for="'endDate-' + ${realEstateObject.id}">Дата окончания:</label>
-            <input type="date" th:id="'endDate-' + ${realEstateObject.id}" th:name="'endDate-' + ${realEstateObject.id}" required>
+            <label th:for="'startHour-' + ${realEstateObject.id}">Часы:</label>
+            <select th:id="'startHour-' + ${realEstateObject.id}" th:name="'startHour-' + ${realEstateObject.id}" required>
+                <!-- Часы от 8 до 20 -->
+                <option value="08">8</option>
+                <option value="09">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+            </select>
+
+            <label th:for="'startMinute-' + ${realEstateObject.id}">Минуты:</label>
+            <select th:id="'startMinute-' + ${realEstateObject.id}" th:name="'startMinute-' + ${realEstateObject.id}" required>
+                <option value="00">00</option>
+                <option value="30">30</option>
+            </select>
+
+            <label th:for="'duration-' + ${realEstateObject.id}">Продолжительность:</label>
+            <select th:id="'duration-' + ${realEstateObject.id}" th:name="'duration-' + ${realEstateObject.id}" required>
+
+                <option value="30">30 минут</option>
+                <option value="60">1 час</option>
+                <option value="90">1.5 часа</option>
+                <option value="120">2 часа</option>
+            </select>
 
             <button th:onclick="'addRequest(' + ${realEstateObject.id} + ', ' + ${userId} + ')'" class="booking-button">Заинтересован</button>
 
         </div>
     </div>
 </div>
-    <script>
-        function addRequest(objectId, userId) {
-            var startDateId = 'startDate-' + objectId;
-        var endDateId = 'endDate-' + objectId;
 
-        // Получаем выбранные пользователем даты
+<script>
+    function addRequest(objectId, userId) {
+        var startDateId = 'startDate-' + objectId;
+        var startHourId = 'startHour-' + objectId;
+        var startMinuteId = 'startMinute-' + objectId;
+        var durationId = 'duration-' + objectId;
+
+        // Получаем выбранные пользователем дату, часы и минуты
         var startDate = document.getElementById(startDateId).value;
-        var endDate = document.getElementById(endDateId).value;
+        var startHour = document.getElementById(startHourId).value;
+        var startMinute = document.getElementById(startMinuteId).value;
+        var duration = parseInt(document.getElementById(durationId).value);
 
         // Проверка на правильность введенных данных
-        if (!startDate || !endDate) {
-            alert('Пожалуйста, выберите дату начала и окончания');
+        if (!startDate || !startHour || !startMinute) {
+            alert('Пожалуйста, выберите дату, часы и минуты начала');
             return;
         }
 
-        // Конвертируем выбранные даты в формат с временем 00:00:00
-        startDate += "T00:00:00";
-        endDate += "T00:00:00";
+        // Конвертируем выбранные дату, часы и минуты в формат с временем
+        var startDateTime = new Date(startDate + 'T' + startHour + ':' + startMinute);
+
+        // Добавляем 3 часа к времени начала
+        startDateTime.setHours(startDateTime.getHours() + 3);
+
+        // Вычисляем дату окончания
+        var endDateTime = new Date(startDateTime.getTime() + duration * 60000); // добавляем продолжительность в миллисекундах
 
         var requestData = {
             userId: userId,
             objectId: objectId,
-            startDate: startDate,
-            endDate: endDate
+            startDate: startDateTime.toISOString(),
+            endDate: endDateTime.toISOString()
         };
 
         fetch('/api/booking', {
@@ -326,7 +366,10 @@
             alert('Ne ok');
         });
     }
-    </script>
+</script>
+
+
+
 </body>
     <footer>
     © 2024 Office Booking. Chernykh Timofei ИКБО-36-22.

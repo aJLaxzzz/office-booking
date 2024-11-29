@@ -6,11 +6,228 @@
     <title>Админка</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+    <style>
+        body {
+            background-color: #121212; /* Темный фон */
+            color: #c5c6c7; /* Светло-серый текст */
+            font-family: 'Arial', sans-serif; /* Шрифт */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        header {
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #1f2833;
+            color: #66fcf1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            z-index: 1000; /* Ensure the header is always on top */
+        }
+
+        footer {
+            width: 100%;
+            padding: 10px 20px;
+            background-color: #1f2833;
+            color: #66fcf1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .container {
+            flex-grow: 1;
+            margin-top: 150px; /* Increased padding to ensure content is below the header */
+            padding-bottom: 40px; /* Spacing for fixed footer */
+            overflow-y: auto; /* Scrollable content */
+            width: 130%; /* Accounting for form width */
+            margin-left: auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        .form-container {
+            width: 200px; /* Сделаем ширину формы немного уже */
+            background-color: #1f2833;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            position: fixed;
+            right: 10px;
+            top: 100px; /* Начинаем форму немного ниже, чтобы было меньше перекрытия с header */
+            bottom: 100px; /* Оставим больше пространства до нижнего края экрана */
+            overflow-y: auto; /* Позволяем прокрутку внутри контейнера */
+            display: flex;
+            flex-direction: column;
+            z-index: 1001; /* Обеспечиваем, чтобы форма была поверх основного контента */
+        }
+
+
+        input, select, button, .button {
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #0b0c10;
+            color: #66fcf1;
+            width: 100%;
+        }
+
+        button, .button {
+            cursor: pointer;
+            background-color: #45a29e;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover, .button:hover {
+            background-color: #ff5555; /* Red background when hovered */
+            transform: scale(1.05);
+        }
+
+        .logout-button {
+            background-color: #ff5555; /* Red background for logout button */
+            text-align: center; /* Center the text inside the button */
+            margin-top: auto; /* Push to the bottom of the form container */
+            width: auto; /* Only as wide as its content */
+        }
+
+        a {
+            color: #66fcf1; /* Neon color for links */
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .real-estate-listing {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #2b333e;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.5);
+            transition: transform 0.3s ease;
+            width: 100%; /* Moderately wide cards */
+            margin: 20px 0; /* Centering cards */
+        }
+
+        .real-estate-listing:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.75);
+        }
+
+        .real-estate-listing img {
+            border-radius: 5px;
+            margin-bottom: 10px;
+            width: 100%; /* Images fill the card width */
+            max-width: 200px; /* Limit image width */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .real-estate-listing p {
+            background-color: #1f2833; /* Фон абзаца */
+            color: #66fcf1; /* Цвет текста */
+            padding: 10px; /* Внутренние отступы */
+            border-radius: 5px; /* Скругление углов */
+            margin: 5px 0; /* Отступы сверху и снизу */
+            box-shadow: 0 2px 5px rgba(0, 255, 255, 0.3); /* Тень для абзаца */
+            transition: background-color 0.3s ease; /* Плавный переход цвета фона */
+        }
+
+        .real-estate-listing p:hover {
+            background-color: #0b0c10; /* Изменение фона при наведении */
+        }
+
+        .real-estate-listing h2 {
+            background-color: #0b0c10; /* Фон заголовка */
+            color: #66fcf1; /* Цвет текста заголовка */
+            padding: 10px; /* Внутренние отступы заголовка */
+            border-radius: 5px; /* Скругление углов заголовка */
+            box-shadow: 0 3px 6px rgba(0, 255, 255, 0.5); /* Тень для заголовка */
+        }
+
+        .real-estate-listing h2:hover {
+            background-color: #1f2833; /* Изменение фона заголовка при наведении */
+        }
+
+       /* Стили для кнопки бронирования */
+    .booking-button {
+        padding: 12px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 5px;
+        background-color: #45a29e;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .booking-button:hover {
+        background-color: #ff5555;
+        transform: scale(1.05);
+    }
+
+    /* Стили для полей ввода даты */
+    input[type="date"] {
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        background-color: #0b0c10;
+        color: #66fcf1;
+        width: 100%;
+        margin-bottom: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+    input[type="date"]:focus {
+        background-color: #45a29e;
+        outline: none;
+    }
+
+    /* Дополнительные стили для лейблов */
+    label {
+        font-size: 14px;
+        color: #66fcf1;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+
+    </style>
 </head>
 <body>
-<div class="container">
-    <h1>Управление недвижимостью</h1>
+<header>
+    <div class="header-content">
+        <h1>Управление недвижимостью</h1>
+    </div>
+</header>
 
+<div class="container">
     <div th:if="${realEstateObjects.isEmpty()}">
         <p>Нет доступных предложений недвижимости.</p>
     </div>
@@ -56,6 +273,18 @@
                 console.error('Ошибка при загрузке пользователей:', error);
             });
 
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0'); // Месяцы начинаются с 0
+            const year = String(date.getFullYear()).slice(-2); // Получаем последние 2 цифры года
+
+            return `${hours}:${minutes} ${day}-${month}-${year}`;
+        }
+
+
         function loadBookings() {
             const bookingsContainers = document.querySelectorAll('.bookings');
 
@@ -76,7 +305,16 @@
                         } else {
                             bookings.forEach(function(booking) {
                                 const user = userMap[booking.userId] || { name: 'Неизвестный пользователь', email: 'Неизвестная почта' }; // Получаем информацию о пользователе
-                                container.innerHTML += `<p>Пользователь: ${user.name}, Почта: ${user.email}, Дата начала: ${booking.startDate}, Дата окончания: ${booking.endDate}</p>`;
+
+                                const startDateFormatted = formatDate(booking.startDate);
+                                const endDateFormatted = formatDate(booking.endDate);
+
+                                // Вычисляем продолжительность в минутах
+                                const startDate = new Date(booking.startDate);
+                                const endDate = new Date(booking.endDate);
+                                const durationInMinutes = Math.floor((endDate - startDate) / (1000 * 60)); // В минутах
+
+                                container.innerHTML += `<p>Имя: ${user.name}, Почта: ${user.email}, Начало: ${startDateFormatted}, Конец: ${endDateFormatted}, Продолжительность: ${durationInMinutes} мин.</p>`;
                             });
                         }
                     })
@@ -87,5 +325,7 @@
         }
     });
 </script>
+
+
 </body>
 </html>
