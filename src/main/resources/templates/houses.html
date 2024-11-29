@@ -313,26 +313,25 @@
 
 
 <div class="container">
-    <!-- Display Real Estate Listings -->
-    <div th:if="${realEstateObjects.isEmpty()}">
+    <div th:if="${meetingRooms.isEmpty()}">
         <p>Нет доступных предложений недвижимости.</p>
     </div>
-    <div th:unless="${realEstateObjects.isEmpty()}">
-        <div th:each="realEstateObject : ${realEstateObjects}" class="real-estate-listing">
-            <h2 th:text="${realEstateObject.name}">Название</h2>
-            <img th:src="@{${realEstateObject.photoURL}}" alt="Изображение недвижимости">
-            <p th:text="'Площадь: ' + ${realEstateObject.area} + ' кв. м.'">Площадь</p>
-            <p th:text="'Макс. количество человек: ' + ${realEstateObject.capacity}">Макс. количество человек:</p>
-            <p th:text="'Описание: ' + ${realEstateObject.description}">Описание</p>
-            <p th:text="'Скорость интернета: ' + ${realEstateObject.internetSpeed} + 'Мбит/с'">Скорость интернета</p>
-            <p th:text="'Этаж: ' + ${realEstateObject.floor}">Этаж</p>
+    <div th:unless="${meetingRooms.isEmpty()}">
+        <div th:each="meetingRooms : ${meetingRooms}" class="real-estate-listing">
+            <h2 th:text="${meetingRooms.name}">Название</h2>
+            <img th:src="@{${meetingRooms.photoURL}}" alt="Изображение недвижимости">
+            <p th:text="'Площадь: ' + ${meetingRooms.area} + ' кв. м.'">Площадь</p>
+            <p th:text="'Макс. количество человек: ' + ${meetingRooms.capacity}">Макс. количество человек:</p>
+            <p th:text="'Описание: ' + ${meetingRooms.description}">Описание</p>
+            <p th:text="'Скорость интернета: ' + ${meetingRooms.internetSpeed} + 'Мбит/с'">Скорость интернета</p>
+            <p th:text="'Этаж: ' + ${meetingRooms.floor}">Этаж</p>
 
             <div class="booking-details">
-                <label th:for="'startDate-' + ${realEstateObject.id}">Дата начала:</label>
-                <input type="date" th:id="'startDate-' + ${realEstateObject.id}" th:name="'startDate-' + ${realEstateObject.id}" required>
+                <label th:for="'startDate-' + ${meetingRooms.id}">Дата начала:</label>
+                <input type="date" th:id="'startDate-' + ${meetingRooms.id}" th:name="'startDate-' + ${meetingRooms.id}" required>
 
-                <label th:for="'startHour-' + ${realEstateObject.id}">Часы:</label>
-                <select th:id="'startHour-' + ${realEstateObject.id}" th:name="'startHour-' + ${realEstateObject.id}" required>
+                <label th:for="'startHour-' + ${meetingRooms.id}">Часы:</label>
+                <select th:id="'startHour-' + ${meetingRooms.id}" th:name="'startHour-' + ${meetingRooms.id}" required>
                     <!-- Часы от 8 до 20 -->
                     <option value="08">8</option>
                     <option value="09">9</option>
@@ -349,14 +348,14 @@
                     <option value="20">20</option>
                 </select>
 
-                <label th:for="'startMinute-' + ${realEstateObject.id}">Минуты:</label>
-                <select th:id="'startMinute-' + ${realEstateObject.id}" th:name="'startMinute-' + ${realEstateObject.id}" required>
+                <label th:for="'startMinute-' + ${meetingRooms.id}">Минуты:</label>
+                <select th:id="'startMinute-' + ${meetingRooms.id}" th:name="'startMinute-' + ${meetingRooms.id}" required>
                     <option value="00">00</option>
                     <option value="30">30</option>
                 </select>
 
-                <label th:for="'duration-' + ${realEstateObject.id}">Продолжительность:</label>
-                <select th:id="'duration-' + ${realEstateObject.id}" th:name="'duration-' + ${realEstateObject.id}" required>
+                <label th:for="'duration-' + ${meetingRooms.id}">Продолжительность:</label>
+                <select th:id="'duration-' + ${meetingRooms.id}" th:name="'duration-' + ${meetingRooms.id}" required>
                     <option value="30">30 минут</option>
                     <option value="60">1 час</option>
                     <option value="90">1.5 часа</option>
@@ -365,7 +364,7 @@
             </div>
 
 
-            <button th:onclick="'addRequest(' + ${realEstateObject.id} + ', ' + ${userId} + ')'" class="booking-button">Забронировать</button>
+            <button th:onclick="'addRequest(' + ${meetingRooms.id} + ', ' + ${userId} + ')'" class="booking-button">Забронировать</button>
 
         </div>
     </div>

@@ -9,8 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @Entity
-@Table(name = "real_estate_objects")
-public class RealEstateObject {
+@Table(name = "meeting_rooms")
+public class MeetingRoom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

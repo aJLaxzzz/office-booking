@@ -40,7 +40,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable).cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth) ->
-                        auth.requestMatchers("/login", "/register", "/", "/resources/**", "/api/bookings/**").permitAll()
+                        auth.requestMatchers("/login", "/register", "/").permitAll()
                                 .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")

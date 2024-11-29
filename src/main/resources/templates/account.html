@@ -328,14 +328,14 @@
     </div>
 
     <div th:unless="${bookingCards.isEmpty()}">
-        <div th:each="card : ${bookingCards}" class="real-estate-listing" th:id="'object-' + ${card.realEstateObject.id}">
-            <h2 th:text="${card.realEstateObject.name}">Название</h2>
-            <img th:src="@{${card.realEstateObject.photoURL}}" alt="Изображение недвижимости">
-            <p th:text="'Площадь: ' + ${card.realEstateObject.area} + ' кв. м.'">Площадь</p>
-            <p th:text="'Макс. количество человек: ' + ${card.realEstateObject.capacity}">Макс. количество человек</p>
-            <p th:text="'Описание: ' + ${card.realEstateObject.description}">Описание</p>
-            <p th:text="'Скорость интернета: ' + ${card.realEstateObject.internetSpeed}+ 'Мбит/с'">Скорость интернета</p>
-            <p th:text="'Этаж: ' + ${card.realEstateObject.floor}">Этаж</p>
+        <div th:each="card : ${bookingCards}" class="real-estate-listing" th:id="'object-' + ${card.meetingRoom.id}">
+            <h2 th:text="${card.meetingRoom.name}">Название</h2>
+            <img th:src="@{${card.meetingRoom.photoURL}}" alt="Изображение недвижимости">
+            <p th:text="'Площадь: ' + ${card.meetingRoom.area} + ' кв. м.'">Площадь</p>
+            <p th:text="'Макс. количество человек: ' + ${card.meetingRoom.capacity}">Макс. количество человек</p>
+            <p th:text="'Описание: ' + ${card.meetingRoom.description}">Описание</p>
+            <p th:text="'Скорость интернета: ' + ${card.meetingRoom.internetSpeed}+ 'Мбит/с'">Скорость интернета</p>
+            <p th:text="'Этаж: ' + ${card.meetingRoom.floor}">Этаж</p>
 
             <div>
                 <h3>Информация о бронировании:</h3>
@@ -344,7 +344,7 @@
                         Начало: <span th:text="${card.booking.startDate}" th:attr="data-start-date=${card.booking.startDate}" class="formatted-date"></span>
                         Конец: <span th:text="${card.booking.endDate}" th:attr="data-end-date=${card.booking.endDate}" class="formatted-date"></span>
                     </p>
-                    <button class="delete-booking delete-button" th:data-booking-id="${card.booking.id}" th:data-object-id="${card.realEstateObject.id}" onclick="deleteBooking(this)">✖</button>
+                    <button class="delete-booking delete-button" th:data-booking-id="${card.booking.id}" th:data-object-id="${card.meetingRoom.id}" onclick="deleteBooking(this)">✖</button>
                 </div>
             </div>
 

@@ -1,10 +1,10 @@
 package com.example.office.booking.controller;
 
 import com.example.office.booking.entity.Booking;
-import com.example.office.booking.entity.RealEstateObject;
+import com.example.office.booking.entity.MeetingRoom;
 import com.example.office.booking.entity.User;
 import com.example.office.booking.repository.BookingRepository;
-import com.example.office.booking.repository.RealEstateObjectRepository;
+import com.example.office.booking.repository.MeetingRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Controller
 public class HousesController {
     @Autowired
-    private RealEstateObjectRepository realEstateObjectRepository;
+    private MeetingRoomRepository meetingRoomRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -47,7 +47,7 @@ public class HousesController {
         model.addAttribute("userId", userId);
 
         // Добавляем объекты недвижимости
-        model.addAttribute("realEstateObjects", realEstateObjectRepository.findAll());
+        model.addAttribute("meetingRooms", meetingRoomRepository.findAll());
         return "houses";
     }
 
@@ -76,7 +76,7 @@ public class HousesController {
             System.out.println(userr);
         }
         // Добавляем объекты недвижимости
-        model.addAttribute("realEstateObjects", realEstateObjectRepository.findAll());
+        model.addAttribute("meetingRooms", meetingRoomRepository.findAll());
         return "admin";
     }
 
@@ -100,13 +100,13 @@ public class HousesController {
             // Собираем данные для отображения, включая объект недвижимости для каждого букинга
             List<Map<String, Object>> bookingCards = userBookings.stream()
                     .map(booking -> {
-                        RealEstateObject realEstateObject = realEstateObjectRepository.findById(booking.getObjectId()).orElse(null);
+                        MeetingRoom meetingRoom = meetingRoomRepository.findById(booking.getObjectId()).orElse(null);
                         Map<String, Object> card = new HashMap<>();
                         card.put("booking", booking);
-                        card.put("realEstateObject", realEstateObject);
+                        card.put("meetingRoom", meetingRoom);
                         return card;
                     })
-                    .filter(card -> card.get("realEstateObject") != null) // Исключаем букинги без объекта
+                    .filter(card -> card.get("meetingRoom") != null) // Исключаем букинги без объекта
                     .collect(Collectors.toList());
 
             model.addAttribute("bookingCards", bookingCards);
@@ -128,17 +128,17 @@ public class HousesController {
                          @RequestParam(required = false) Integer internetSpeedMax,
                          @RequestParam(required = false) Integer floorMin,
                          @RequestParam(required = false) Integer floorMax,
-                         @RequestParam(defaultValue = "address") String sortBy,
+                         @RequestParam(defaultValue = "name") String sortBy,
                          @RequestParam(defaultValue = "asc") String sortDirection,
                          @RequestParam Long userId,
                          Model model) {
 
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
-        List<RealEstateObject> searchResults = realEstateObjectRepository.findByCriteria(
+        List<MeetingRoom> searchResults = meetingRoomRepository.findByCriteria(
                 name, description, areaMin, areaMax, capacityMin, capacityMax,
                 internetSpeedMin, internetSpeedMax, floorMin, floorMax, sort);
 
-        model.addAttribute("realEstateObjects", searchResults);
+        model.addAttribute("meetingRooms", searchResults);
         model.addAttribute("userId", userId);
         return "houses";
     }

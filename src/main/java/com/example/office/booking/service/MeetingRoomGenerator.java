@@ -1,7 +1,8 @@
 package com.example.office.booking.service;
 
-import com.example.office.booking.entity.RealEstateObject;
-import com.example.office.booking.repository.RealEstateObjectRepository;
+import com.example.office.booking.entity.MeetingRoom;
+import com.example.office.booking.entity.MeetingRoom;
+import com.example.office.booking.repository.MeetingRoomRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
-public class RealEstateInitGenerator {
+public class MeetingRoomGenerator {
     @Autowired
-    private RealEstateObjectRepository realEstateObjectRepository;
+    private MeetingRoomRepository meetingRoomRepository;
 
     private static final String[] ROOM_DESCRIPTIONS = {
             "Современная переговорная комната с мультимедийным оборудованием.",
@@ -55,9 +56,9 @@ public class RealEstateInitGenerator {
         return "/" + (1+random.nextInt(14)) + ".jpeg"; // URL фотографии
     }
 
-    public List<RealEstateObject> generateMeetingRooms(int count) {
+    public List<MeetingRoom> generateMeetingRooms(int count) {
         return IntStream.range(0, count).mapToObj(
-                i -> new RealEstateObject(
+                i -> new MeetingRoom(
                         null,
                         getRoomName(i), // Используем индекс для формирования названия
                         getRandomArea(),
@@ -72,7 +73,7 @@ public class RealEstateInitGenerator {
 
     @PostConstruct
     public void fillDatabase() {
-        List<RealEstateObject> meetingRooms = generateMeetingRooms(15);
-        realEstateObjectRepository.saveAll(meetingRooms);
+        List<MeetingRoom> meetingRooms = generateMeetingRooms(15);
+        meetingRoomRepository.saveAll(meetingRooms);
     }
 }

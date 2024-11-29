@@ -336,25 +336,25 @@
 </div>
 <div class="container">
 
-    <div th:if="${realEstateObjects.isEmpty()}">
+    <div th:if="${meetingRooms.isEmpty()}">
         <p>Нет доступных предложений недвижимости.</p>
     </div>
 
-    <div th:unless="${realEstateObjects.isEmpty()}">
-        <div th:each="realEstateObject : ${realEstateObjects}" class="real-estate-listing">
+    <div th:unless="${meetingRooms.isEmpty()}">
+        <div th:each="meetingRoom : ${meetingRooms}" class="real-estate-listing">
             <div class="delete-button-container">
-                <button class="delete-button delete-room" th:data-object-id="${realEstateObject.id}" onclick="deleteRoom(this)">✖</button>
+                <button class="delete-button delete-room" th:data-object-id="${meetingRoom.id}" onclick="deleteRoom(this)">✖</button>
             </div>
-            <h2 th:text="${realEstateObject.name}">Название</h2>
-            <img th:src="@{${realEstateObject.photoURL}}" alt="Изображение недвижимости" class="img-fluid">
-            <p th:text="'Площадь: ' + ${realEstateObject.area} + ' кв. м.'">Площадь</p>
-            <p th:text="'Макс. количество человек: ' + ${realEstateObject.capacity}">Макс. количество человек</p>
-            <p th:text="'Описание: ' + ${realEstateObject.description}">Описание</p>
-            <p th:text="'Скорость интернета: ' + ${realEstateObject.internetSpeed} + 'Мбит/с'">Скорость интернета</p>
-            <p th:text="'Этаж: ' + ${realEstateObject.floor}">Этаж</p>
+            <h2 th:text="${meetingRoom.name}">Название</h2>
+            <img th:src="@{${meetingRoom.photoURL}}" alt="Изображение недвижимости" class="img-fluid">
+            <p th:text="'Площадь: ' + ${meetingRoom.area} + ' кв. м.'">Площадь</p>
+            <p th:text="'Макс. количество человек: ' + ${meetingRoom.capacity}">Макс. количество человек</p>
+            <p th:text="'Описание: ' + ${meetingRoom.description}">Описание</p>
+            <p th:text="'Скорость интернета: ' + ${meetingRoom.internetSpeed} + 'Мбит/с'">Скорость интернета</p>
+            <p th:text="'Этаж: ' + ${meetingRoom.floor}">Этаж</p>
 
             <h3>Бронирования:</h3>
-            <div class="bookings" th:data-object-id="${realEstateObject.id}"></div>
+            <div class="bookings" th:data-object-id="${meetingRoom.id}"></div>
         </div>
 
     </div>
@@ -363,7 +363,7 @@
 <script>
     function deleteRoom(button) {
             const roomId = button.getAttribute('data-object-id');
-            const url = `/api/realestate/${roomId}`;
+            const url = `/api/meetingrooms/${roomId}`;
 
             fetch(url, {
                 method: 'DELETE',

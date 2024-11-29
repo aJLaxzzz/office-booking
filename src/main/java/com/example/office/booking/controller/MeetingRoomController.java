@@ -1,9 +1,9 @@
 package com.example.office.booking.controller;
 
 import com.example.office.booking.entity.Booking;
-import com.example.office.booking.entity.RealEstateObject;
+import com.example.office.booking.entity.MeetingRoom;
 import com.example.office.booking.repository.BookingRepository;
-import com.example.office.booking.repository.RealEstateObjectRepository;
+import com.example.office.booking.repository.MeetingRoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -15,38 +15,38 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/realestate")
-public class RealEstateObjectController {
+@RequestMapping("/api/meetingrooms")
+public class MeetingRoomController {
     @Autowired
-    private RealEstateObjectRepository realEstateObjectRepository;
+    private MeetingRoomRepository meetingRoomRepository;
 
     @Autowired
     private BookingRepository bookingRepository;
 
     @GetMapping
-    public List<RealEstateObject> getAllRealEstateObjects() {
-        return realEstateObjectRepository.findAll();
+    public List<MeetingRoom> getAllMeetingRooms() {
+        return meetingRoomRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RealEstateObject> getRealEstateObjectById(@PathVariable Long id) {
-        Optional<RealEstateObject> realEstateObject = realEstateObjectRepository.findById(id);
-        return realEstateObject.map(ResponseEntity::ok)
+    public ResponseEntity<MeetingRoom> getMeetingRoomById(@PathVariable Long id) {
+        Optional<MeetingRoom> MeetingRoom = meetingRoomRepository.findById(id);
+        return MeetingRoom.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<RealEstateObject> createRealEstateObject(@RequestBody RealEstateObject realEstateObject) {
-        RealEstateObject savedObject = realEstateObjectRepository.save(realEstateObject);
+    public ResponseEntity<MeetingRoom> createMeetingRoom(@RequestBody MeetingRoom MeetingRoom) {
+        MeetingRoom savedObject = meetingRoomRepository.save(MeetingRoom);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedObject);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RealEstateObject> updateRealEstateObject(@PathVariable Long id, @RequestBody RealEstateObject updatedObject) {
-        Optional<RealEstateObject> existingObjectOptional = realEstateObjectRepository.findById(id);
+    public ResponseEntity<MeetingRoom> updateMeetingRoom(@PathVariable Long id, @RequestBody MeetingRoom updatedObject) {
+        Optional<MeetingRoom> existingObjectOptional = meetingRoomRepository.findById(id);
         if (existingObjectOptional.isPresent()) {
             updatedObject.setId(id);
-            RealEstateObject savedObject = realEstateObjectRepository.save(updatedObject);
+            MeetingRoom savedObject = meetingRoomRepository.save(updatedObject);
             return ResponseEntity.ok(savedObject);
         } else {
             return ResponseEntity.notFound().build();
@@ -54,9 +54,9 @@ public class RealEstateObjectController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRealEstateObject(@PathVariable Long id) {
-        Optional<RealEstateObject> realEstateObjectOptional = realEstateObjectRepository.findById(id);
-        if (realEstateObjectOptional.isPresent()) {
+    public ResponseEntity<Void> deleteMeetingRoom(@PathVariable Long id) {
+        Optional<MeetingRoom> MeetingRoomOptional = meetingRoomRepository.findById(id);
+        if (MeetingRoomOptional.isPresent()) {
             // Получаем все бронирования, связанные с объектом недвижимости
             List<Booking> bookings = bookingRepository.findByObjectId(id);
 
@@ -66,7 +66,7 @@ public class RealEstateObjectController {
             }
 
             // Удаляем сам объект недвижимости
-            realEstateObjectRepository.deleteById(id);
+            meetingRoomRepository.deleteById(id);
 
             return ResponseEntity.noContent().build();
         } else {
@@ -75,7 +75,7 @@ public class RealEstateObjectController {
     }
 
     @GetMapping("/search")
-    public List<RealEstateObject> searchRealEstateObjects(@RequestParam MultiValueMap<String, String> params) {
+    public List<MeetingRoom> searchMeetingRooms(@RequestParam MultiValueMap<String, String> params) {
         String name = params.getFirst("name");
         String description = params.getFirst("description");
         Integer areaMin = params.containsKey("areaMin") ? Integer.parseInt(params.getFirst("areaMin")) : null;
@@ -92,7 +92,7 @@ public class RealEstateObjectController {
         String sortDirection = params.getFirst("sortDirection");
         Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
 
-        List<RealEstateObject> result = realEstateObjectRepository.findByCriteria(
+        List<MeetingRoom> result = meetingRoomRepository.findByCriteria(
                 name, description, areaMin, areaMax, capacityMin, capacityMax,
                 internetSpeedMin, internetSpeedMax, floorMin, floorMax, sort
         );
