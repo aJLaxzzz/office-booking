@@ -29,7 +29,7 @@ public class EntryController {
         }
         if (userService.addUser(newUser)) {
             request.login(newUser.getName(), newUser.getPassword());
-            return "redirect:/houses";
+            return "redirect:/rooms";
         }
 
         return "redirect:/register?exists";
@@ -39,6 +39,11 @@ public class EntryController {
     public String loginPage() {
         return "login";
     }
+
+
+
+
+
 
     @GetMapping("/add")
     public String addPage() {

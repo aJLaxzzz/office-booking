@@ -78,7 +78,7 @@ public class SecurityConfig {
 
                 return switch (userRole.role) {
                     case ADMIN -> "/admin";
-                    case USER -> "/houses";
+                    case USER -> "/rooms";
                 };
             }
         };

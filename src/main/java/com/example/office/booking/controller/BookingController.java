@@ -44,11 +44,11 @@ public class BookingController {
     public ResponseEntity<Booking> createBooking(@RequestBody Booking booking) {
         if (booking.getStartDate().isBefore(LocalDateTime.now())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(null); // Невозможная дата начала
+                    .body(null);
         }
         if (booking.getStartDate().isAfter(booking.getEndDate())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(null); // Неверный формат дат
+                    .body(null);
         }
         List<Booking> conflictingBookingsForObject = bookingRepository.findByObjectIdAndStartDateBeforeAndEndDateAfter(
                 booking.getObjectId(), booking.getEndDate(), booking.getStartDate());
@@ -56,7 +56,7 @@ public class BookingController {
         for (Booking existingBooking : conflictingBookingsForObject) {
             if (!(booking.getEndDate().isBefore(existingBooking.getStartDate()) ||
                     booking.getStartDate().isAfter(existingBooking.getEndDate()))) {
-                return ResponseEntity.status(HttpStatus.CONFLICT).build(); // Конфликт бронирования
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
             }
         }
 
@@ -64,7 +64,7 @@ public class BookingController {
                 booking.getUserId(), booking.getEndDate(), booking.getStartDate());
 
         if (!conflictingBookingsForUser.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null); // Конфликт у пользователя
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
 
         Booking savedBooking = bookingRepository.save(booking);

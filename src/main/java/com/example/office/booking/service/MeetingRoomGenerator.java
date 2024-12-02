@@ -33,27 +33,27 @@ public class MeetingRoomGenerator {
     private final Random random = new Random();
 
     private String getRoomName(int index) {
-        return "Переговорная комната " + (index + 1);
+        return "Конференц-зал " + (index + 1);
     }
 
     private int getRandomArea() {
-        return 15 + random.nextInt(85); // Площадь в квадратных метрах
+        return 15 + random.nextInt(85); 
     }
 
     private int getRandomInternetSpeed() {
-        return 100 + random.nextInt(200); // Скорость интернета в Мбит/с
+        return 100 + random.nextInt(200);
     }
 
     private int getRandomCapacity() {
-        return 6 + random.nextInt(15); // Вместимость
+        return 6 + random.nextInt(15);
     }
 
     private int getRandomFloor() {
-        return 1 + random.nextInt(25); // Этаж
+        return 1 + random.nextInt(25);
     }
 
     private String getRandomPhotoURL() {
-        return "/" + (1+random.nextInt(14)) + ".jpeg"; // URL фотографии
+        return "/" + (1+random.nextInt(14)) + ".jpeg";
     }
 
     public List<MeetingRoom> generateMeetingRooms(int count) {

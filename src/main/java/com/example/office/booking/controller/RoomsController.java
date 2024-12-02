@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
-public class HousesController {
+public class RoomsController {
     @Autowired
     private MeetingRoomRepository meetingRoomRepository;
 
@@ -29,7 +29,7 @@ public class HousesController {
     private BookingRepository bookingRepository;
 
 
-    @GetMapping("/houses")
+    @GetMapping("/rooms")
     public String homePage(Model model, Authentication authentication) {
         String username = authentication.getName();
         Optional<User> userOptional = userRepository.findUserByName(username);
@@ -37,7 +37,7 @@ public class HousesController {
         Long userId = (user != null) ? user.getId() : null;
         model.addAttribute("userId", userId);
         model.addAttribute("meetingRooms", meetingRoomRepository.findAll());
-        return "houses";
+        return "rooms";
     }
 
 
@@ -78,7 +78,7 @@ public class HousesController {
                         card.put("meetingRoom", meetingRoom);
                         return card;
                     })
-                    .filter(card -> card.get("meetingRoom") != null) // Исключаем букинги без объекта
+                    .filter(card -> card.get("meetingRoom") != null)
                     .collect(Collectors.toList());
 
             model.addAttribute("bookingCards", bookingCards);
@@ -112,7 +112,7 @@ public class HousesController {
 
         model.addAttribute("meetingRooms", searchResults);
         model.addAttribute("userId", userId);
-        return "houses";
+        return "rooms";
     }
 
 }
