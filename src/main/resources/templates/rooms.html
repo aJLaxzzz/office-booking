@@ -377,25 +377,20 @@
         var startMinuteId = 'startMinute-' + objectId;
         var durationId = 'duration-' + objectId;
 
-        // Получаем выбранные пользователем дату, часы и минуты
         var startDate = document.getElementById(startDateId).value;
         var startHour = document.getElementById(startHourId).value;
         var startMinute = document.getElementById(startMinuteId).value;
         var duration = parseInt(document.getElementById(durationId).value);
 
-        // Проверка на правильность введенных данных
         if (!startDate || !startHour || !startMinute) {
             alert('Пожалуйста, выберите дату, часы и минуты начала');
             return;
         }
 
-        // Конвертируем выбранные дату, часы и минуты в формат с временем
         var startDateTime = new Date(startDate + 'T' + startHour + ':' + startMinute);
 
-        // Добавляем 3 часа к времени начала
         startDateTime.setHours(startDateTime.getHours() + 3);
 
-        // Вычисляем дату окончания
         var endDateTime = new Date(startDateTime.getTime() + duration * 60000); // добавляем продолжительность в миллисекундах
 
         var requestData = {
@@ -429,7 +424,7 @@
 </script>
 
 <footer>
-    © 2024 Office Booking. Chernykh Timofei ИКБО-36-22.
+    © 2024 Meeting Room Booking. Черных Тимофей ИКБО-36-22.
 </footer>
 
 </body>

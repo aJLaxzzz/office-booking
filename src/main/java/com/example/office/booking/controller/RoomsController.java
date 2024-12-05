@@ -28,6 +28,10 @@ public class RoomsController {
     @Autowired
     private BookingRepository bookingRepository;
 
+    @GetMapping("/")
+    public String home() {
+        return "register";
+    }
 
     @GetMapping("/rooms")
     public String homePage(Model model, Authentication authentication) {
